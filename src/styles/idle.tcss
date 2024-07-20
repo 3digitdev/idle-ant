@@ -65,3 +65,7 @@ GameClock {
     background: $boost;
     border: round white;
 }
+
+.hidden {
+    display: none;
+}

@@ -1,14 +1,38 @@
-from enum import Enum, auto, StrEnum
+from enum import Enum, auto, StrEnum, EnumMeta
 
 
 class ResourceType(StrEnum):
     FOOD = 'Food'
     STICKS = 'Sticks'
 
+    def __contains__(self, item):
+        try:
+            self(item)
+        except ValueError:
+            return False
+        return True
+
 
 class ProducerType(StrEnum):
-    IDLE = 'Idle'
     WORKER = 'Workers'
+
+    def __contains__(self, item):
+        try:
+            self(item)
+        except ValueError:
+            return False
+        return True
+
+
+class UpgradeType(StrEnum):
+    STILTS = 'Stilts'
+
+    def __contains__(self, item):
+        try:
+            self(item)
+        except ValueError:
+            return False
+        return True
 
 
 class Status(Enum):

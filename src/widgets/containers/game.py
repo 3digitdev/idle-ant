@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.widgets import Button, Static
-from constants import ResourceType, ProducerType
+from constants import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.containers import ColumnsContainer
 
@@ -24,8 +24,10 @@ class GameContainer(Static):
         match event.button.id.split('-'):
             case ['gather']:
                 self.game_state.resources[ResourceType.FOOD].total += 1
-            case [obj_type, num]:
-                self.game_state.purchase(ProducerType(obj_type), int(num))
+            case [obj_type, num] if obj_type in ProducerType:
+                self.game_state.purchase_producer(ProducerType(obj_type), int(num))
+            case [obj_type, num] if obj_type in UpgradeType:
+                self.game_state.purchase_upgrade(UpgradeType(obj_type), int(num))
             case _:
                 pass
         self.mutate_reactive(GameContainer.game_state)

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from dataclasses import field, dataclass
 
-from constants import ResourceType, ProducerType
+from constants import ResourceType, ProducerType, Status
 
 
 @dataclass
@@ -16,6 +16,7 @@ class Producer:
     name: ProducerType
     cost: tuple[ResourceType, int] | None = None
     total: int = 0
+    status: Status = Status.DISABLED
     rates: dict[ResourceType, float] = field(default_factory=lambda: defaultdict(float))
 
     def __getitem__(self, resource: ResourceType) -> float:

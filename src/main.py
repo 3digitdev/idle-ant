@@ -1,14 +1,14 @@
-from collections import defaultdict
 from dataclasses import dataclass, field
-from enum import StrEnum, Enum, auto
 from time import monotonic
-from typing import Self
 
 from textual.timer import Timer
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer, HorizontalScroll, Container, Horizontal
 from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static, Button
+from constants import Status, ResourceType, ProducerType
+from producers import Producer
+from resources import Resource
 
 
 class GameClock(Static):
@@ -40,65 +40,6 @@ class GameClock(Static):
             result += f'{d:,.0f}d, '
         result += f'{hr:02,.0f}:{min:02,.0f}:{sec:02.0f}'
         self.update(result)
-
-
-class ResourceType(StrEnum):
-    FOOD = 'Food'
-    STICKS = 'Sticks'
-
-
-class ProducerType(StrEnum):
-    IDLE = 'Idle'
-    WORKER = 'Workers'
-
-
-class Status(Enum):
-    DISABLED = auto()
-    ENABLED = auto()
-    SOON = auto()
-
-
-@dataclass
-class Resource:
-    """A base 'resource' type, which helps calculate progress to a future full value."""
-
-    name: ResourceType
-    total: int = 0
-    progress: float = 0.0
-    status: Status = Status.DISABLED
-
-    def __add__(self, other: Self | float) -> Self:
-        if not isinstance(other, float):
-            extra, self.progress = divmod(self.progress + other.progress, 1)
-            self.total += int(other.total + extra)
-        else:
-            total, self.progress = divmod(self.total + self.progress + other, 1)
-            self.total = int(total)
-        return self
-
-    def __str__(self) -> str:
-        return f'{self.name}: {self.total}'
-
-
-@dataclass
-class Producer:
-    """
-    A base 'producer' type, which can produce resources at given rates.
-
-    A single producer may produce many different resources, and the rates may change
-    from modifiers due to other factors.
-    """
-
-    name: ProducerType
-    cost: tuple[ResourceType, int] | None = None
-    total: int = 0
-    rates: dict[ResourceType, float] = field(default_factory=lambda: defaultdict(float))
-
-    def __getitem__(self, resource: ResourceType) -> float:
-        return self.rates[resource]
-
-    def __setitem__(self, resource: ResourceType, value: float) -> None:
-        self.rates[resource] = value
 
 
 def calculate_resource_value(resource: ResourceType, producers: list[Producer]) -> Resource:

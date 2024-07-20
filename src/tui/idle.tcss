@@ -1,0 +1,67 @@
+#clock_container {
+    height: 1;
+    margin-bottom: 1;
+    dock: bottom;
+    width: 100%;
+}
+
+GameContainer Button #click {
+    background: $boost;
+    align: center top;
+}
+
+.buy {
+    width: 3;
+    min-width: 4;
+    border: none;
+    background: white;
+    margin-left: 1;
+}
+
+.food-row {
+    height: 5;
+    content-align: center middle;
+    border: round white;
+}
+
+.gather-btn {
+    min-width: 8;
+    width: 8;
+    dock: right;
+}
+
+.entry-text {
+    border: none;
+    width: auto;
+    height: 1;
+    dock: left;
+}
+
+.entry-value {
+    width: auto;
+    margin-left: 3;
+    text-style: bold;
+}
+
+.food {
+    height: 3;
+    content-align: left middle;
+}
+
+.entry-buttons {
+    width: auto;
+    dock: right;
+}
+
+GameClock {
+    background: $boost;
+    content-align: right middle;
+    dock: right;
+}
+
+.display-column {
+    padding: 1;
+    width: 30;
+    background: $boost;
+    border: round white;
+}

@@ -1,0 +1,35 @@
+[project]
+name = "tui-test"
+description = "Monkeying around with TUIs in Python"
+requires-python = ">=3.12"
+dynamic = ["version"]
+authors = [
+  {name = "Max Bussiere", email = "max@3digit.dev"}
+]
+maintainers = [
+  {name = "Max Bussiere", email = "max@3digit.dev"},
+]
+readme = "README.md"
+dependencies = [
+    "textual >= 0.73.0, < 1",
+    "textual-dev >= 1.5.1, < 2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit >= 3.6.0, < 4",
+    "ruff >= 0.1.14, < 1",
+    "pip-tools >= 7.3.0, < 8"
+]
+
+[build-system]
+requires = ["pip-tools >= 7.3.0, < 8"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]

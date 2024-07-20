@@ -1,3 +1,5 @@
+"""TODO: THIS IS HERE AS AN EXAMPLE FROM THE TEXTUAL TUTORIAL. IT WILL BE REMOVED LATER."""
+
 from time import monotonic
 
 from textual.timer import Timer
@@ -70,7 +72,7 @@ class Stopwatch(Static):
 
 
 class StopwatchApp(App):
-    CSS_PATH = 'stopwatch.tcss'
+    CSS_PATH = 'styles/stopwatch.tcss'
     BINDINGS = [
         ('q', 'quit', 'Quit'),
         ('d', 'toggle_dark', 'Toggle Dark Mode'),

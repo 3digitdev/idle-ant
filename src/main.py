@@ -6,10 +6,8 @@ from widgets.clock import GameClock
 
 
 class IdleApp(App):
-    CSS_PATH = 'idle.tcss'
-    BINDINGS = [
-        ('q', 'quit', 'Quit'),
-    ]
+    CSS_PATH = 'styles/idle.tcss'
+    BINDINGS = [('q', 'quit', 'Quit'), ('d', 'details', 'Details')]
 
     def on_mount(self) -> None:
         self.title = 'Antics'
@@ -19,6 +17,10 @@ class IdleApp(App):
         yield GameContainer(id='game_container')
         yield Container(GameClock(), id='clock_container')
         yield Footer()
+
+    def action_details(self) -> None:
+        print('TODO: IMPLEMENT A "DETAILS" SCREEN.')
+        pass
 
 
 if __name__ == '__main__':

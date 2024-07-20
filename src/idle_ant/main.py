@@ -1,4 +1,3 @@
-import traceback
 from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import StrEnum, Enum, auto
@@ -9,7 +8,7 @@ from textual.timer import Timer
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer, HorizontalScroll, Container, Horizontal
 from textual.reactive import reactive
-from textual.widgets import Header, Footer, Static, Button, Label
+from textual.widgets import Header, Footer, Static, Button
 
 
 class GameClock(Static):
@@ -62,6 +61,7 @@ class Status(Enum):
 @dataclass
 class Resource:
     """A base 'resource' type, which helps calculate progress to a future full value."""
+
     name: ResourceType
     total: int = 0
     progress: float = 0.0
@@ -88,6 +88,7 @@ class Producer:
     A single producer may produce many different resources, and the rates may change
     from modifiers due to other factors.
     """
+
     name: ProducerType
     cost: tuple[ResourceType, int] | None = None
     total: int = 0
@@ -111,22 +112,26 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer]) 
 
 @dataclass
 class GameState:
-    resources: dict[ResourceType, Resource] = field(default_factory=lambda: {
-        ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
-        ResourceType.STICKS: Resource(name=ResourceType.STICKS, status=Status.SOON),
-    })
-    producers: dict[ProducerType, Producer] = field(default_factory=lambda: {
-        ProducerType.IDLE: Producer(name=ProducerType.IDLE, cost=None, total=1, rates={ResourceType.FOOD: 1}),
-        ProducerType.WORKER: Producer(name=ProducerType.WORKER, cost=(ResourceType.FOOD, 10), total=1, rates={ResourceType.FOOD: 1}),
-    })
+    resources: dict[ResourceType, Resource] = field(
+        default_factory=lambda: {
+            ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
+            ResourceType.STICKS: Resource(name=ResourceType.STICKS, status=Status.SOON),
+        }
+    )
+    producers: dict[ProducerType, Producer] = field(
+        default_factory=lambda: {
+            ProducerType.IDLE: Producer(name=ProducerType.IDLE, cost=None, total=1, rates={ResourceType.FOOD: 1}),
+            ProducerType.WORKER: Producer(
+                name=ProducerType.WORKER, cost=(ResourceType.FOOD, 10), total=1, rates={ResourceType.FOOD: 1}
+            ),
+        }
+    )
 
     def tick(self) -> None:
         for rtype, resource in self.resources.items():
             if resource.status != Status.ENABLED:
                 continue
-            self.resources[rtype] += calculate_resource_value(
-                rtype, list(self.producers.values())
-            )
+            self.resources[rtype] += calculate_resource_value(rtype, list(self.producers.values()))
 
     def purchase(self, producer: ProducerType, amount: int) -> None:
         if self.producers[producer].cost:
@@ -166,12 +171,8 @@ class RowEntry(Horizontal):
             yield Button('Gather', id='gather', classes='gather-btn', variant='success')
         if self.is_producer:
             yield Horizontal(
-                BuyButton(
-                    key_type=self.obj_type, amount=1, id=f'{self.obj_type}-1', classes='buy', disabled=True
-                ),
-                BuyButton(
-                    key_type=self.obj_type, amount=5, id=f'{self.obj_type}-5', classes='buy', disabled=True
-                ),
+                BuyButton(key_type=self.obj_type, amount=1, id=f'{self.obj_type}-1', classes='buy', disabled=True),
+                BuyButton(key_type=self.obj_type, amount=5, id=f'{self.obj_type}-5', classes='buy', disabled=True),
                 classes='entry-buttons',
             )
 

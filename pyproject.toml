@@ -1,6 +1,6 @@
 [project]
-name = "tui-test"
-description = "Monkeying around with TUIs in Python"
+name = "idle-ant"
+description = "Idle Clicker TUI Game. With ants."
 requires-python = ">=3.12"
 dynamic = ["version"]
 authors = [

@@ -56,7 +56,7 @@ class Stopwatch(Static):
                 self.add_class('started')
             case 'stop':
                 time_display.stop()
-                self.remove_class("started")
+                self.remove_class('started')
             case 'reset':
                 time_display.reset()
             case _:

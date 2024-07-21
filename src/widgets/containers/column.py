@@ -15,7 +15,9 @@ class ResourcesColumn(ScrollableContainer):
 
     def compose(self) -> ComposeResult:
         for resource in ResourceType:
-            yield ResourceRow(resource, self.game_state.get_status(resource)).data_bind(ResourcesColumn.game_state)
+            yield ResourceRow(ResourceType(resource), self.game_state.get_status(resource)).data_bind(
+                ResourcesColumn.game_state
+            )
 
 
 class ProducersColumn(ScrollableContainer):
@@ -26,7 +28,9 @@ class ProducersColumn(ScrollableContainer):
 
     def compose(self) -> ComposeResult:
         for producer in ProducerType:
-            yield ProducerRow(producer, self.game_state.get_status(producer)).data_bind(ProducersColumn.game_state)
+            yield ProducerRow(ProducerType(producer), self.game_state.get_status(producer)).data_bind(
+                ProducersColumn.game_state
+            )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""
@@ -46,7 +50,9 @@ class UpgradesColumn(ScrollableContainer):
 
     def compose(self) -> ComposeResult:
         for upgrade in UpgradeType:
-            yield UpgradeRow(upgrade, self.game_state.get_status(upgrade)).data_bind(UpgradesColumn.game_state)
+            yield UpgradeRow(UpgradeType(upgrade), self.game_state.get_status(upgrade)).data_bind(
+                UpgradesColumn.game_state
+            )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""

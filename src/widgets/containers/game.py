@@ -27,6 +27,9 @@ class GameContainer(Static):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""
+        # NOTE: This event can't be moved into ResourceRow, or the
+        #       mutate_reactive(ResourceRow.game_state) would end up
+        #       triggering twice and causing bugs
         if event.button.id == 'gather':
             self.game_state.resources[ResourceType.FOOD].total += 1
             self.mutate_reactive(GameContainer.game_state)

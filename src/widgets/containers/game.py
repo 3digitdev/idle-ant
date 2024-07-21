@@ -27,9 +27,6 @@ class GameContainer(Static):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""
-        match event.button.id.split('-'):
-            case ['gather']:
-                self.game_state.resources[ResourceType.FOOD].total += 1
-                self.mutate_reactive(GameContainer.game_state)
-            case _:
-                pass
+        if event.button.id == 'gather':
+            self.game_state.resources[ResourceType.FOOD].total += 1
+            self.mutate_reactive(GameContainer.game_state)

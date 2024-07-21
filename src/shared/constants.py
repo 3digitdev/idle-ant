@@ -1,4 +1,4 @@
-from enum import Enum, auto, StrEnum, EnumMeta
+from enum import Enum, auto, StrEnum
 
 
 class ResourceType(StrEnum):

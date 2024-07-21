@@ -2,7 +2,7 @@ from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.widgets import Button, Static
 from textual.containers import Horizontal
-from constants import ResourceType, ProducerType, UpgradeType, Status
+from shared import ResourceType, ProducerType, UpgradeType, Status, abbrev_num
 from game import GameState
 from widgets import BuyButton
 
@@ -23,7 +23,7 @@ class Row(Horizontal):
 
     def compose_text(self, is_food: bool = False) -> ComposeResult:
         yield Static(str(self.key_type), classes='entry-text' + (' food' if is_food else ''))
-        yield Static('-', classes='entry-value' + (' food' if is_food else ''))
+        yield Static('0', classes='entry-value' + (' food' if is_food else ''))
 
     def compose_non_resource(self) -> ComposeResult:
         yield from self.compose_text(self.key_type == ResourceType.FOOD)
@@ -43,11 +43,11 @@ class Row(Horizontal):
         for btn in btns:
             btn.disabled = self.btn_disabled(btn, record)
 
-    def _watch_game_state(self, game_state: GameState, new_total: int) -> None:
+    def _game_state(self, game_state: GameState, new_total: int) -> None:
         self.status = game_state.get_status(self.key_type)
         if self.status != Status.DISABLED:
             self.classes = [x for x in self.classes if x != 'hidden']
-        self.query_one('.entry-value', Static).update(str(new_total))
+        self.query_one('.entry-value', Static).update(abbrev_num(new_total))
 
 
 class ResourceRow(Row):
@@ -63,7 +63,7 @@ class ResourceRow(Row):
             yield Button('Gather', id='gather', classes='gather-btn', variant='success')
 
     def watch_game_state(self, game_state: GameState) -> None:
-        super()._watch_game_state(game_state, game_state.resources[self.key_type].total)
+        super()._game_state(game_state, game_state.resources[self.key_type].total)
 
 
 class ProducerRow(Row):
@@ -71,7 +71,7 @@ class ProducerRow(Row):
         yield from self.compose_non_resource()
 
     def watch_game_state(self, game_state: GameState) -> None:
-        super()._watch_game_state(game_state, game_state.producers[self.key_type].total)
+        super()._game_state(game_state, game_state.producers[self.key_type].total)
         self.update_btn_states(game_state.producers)
 
 
@@ -80,5 +80,5 @@ class UpgradeRow(Row):
         yield from self.compose_non_resource()
 
     def watch_game_state(self, game_state: GameState) -> None:
-        super()._watch_game_state(game_state, game_state.upgrades[self.key_type].total)
+        super()._game_state(game_state, game_state.upgrades[self.key_type].total)
         self.update_btn_states(game_state.upgrades)

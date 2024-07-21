@@ -2,7 +2,7 @@ from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.containers import ScrollableContainer
 from textual.widgets import Button
-from constants import ResourceType, ProducerType, UpgradeType
+from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.containers import ResourceRow, ProducerRow, UpgradeRow
 

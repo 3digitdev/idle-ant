@@ -1,7 +1,7 @@
 from collections import defaultdict
 from dataclasses import field, dataclass
 
-from constants import ResourceType, ProducerType, Status
+from shared import ResourceType, ProducerType, Status
 
 
 @dataclass

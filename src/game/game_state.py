@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from math import prod
 from typing import Self
 
-from constants import ResourceType, ProducerType, Status, UpgradeType
+from shared import ResourceType, ProducerType, Status, UpgradeType
 from resources import Resource
 from producers import Producer
 from upgrades import Upgrade

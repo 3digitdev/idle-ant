@@ -2,7 +2,7 @@ from textual.app import ComposeResult
 from textual.containers import HorizontalScroll
 from textual.reactive import reactive
 from textual.widgets import Button, Static
-from constants import ResourceType
+from shared import ResourceType
 from game import GameState
 from widgets.containers import ResourcesColumn, ProducersColumn, UpgradesColumn
 

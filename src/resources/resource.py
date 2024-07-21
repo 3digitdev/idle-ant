@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Self
 
-from constants import ResourceType, Status
+from shared import ResourceType, Status
 
 
 @dataclass

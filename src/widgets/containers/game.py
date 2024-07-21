@@ -8,6 +8,7 @@ from widgets.containers import ResourcesColumn, ProducersColumn, UpgradesColumn
 
 
 class GameContainer(Static):
+    # Disabling recompose here causes it to stop updating after the first button press...
     game_state: reactive[GameState] = reactive(GameState(), recompose=True)
 
     def on_mount(self) -> None:

@@ -1,6 +1,6 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
-from textual.containers import ScrollableContainer, HorizontalScroll
+from textual.containers import ScrollableContainer
 from constants import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.containers import RowEntry
@@ -52,18 +52,6 @@ class ResourcesColumn(ScrollableContainer):
         yield RowEntry(ResourceType.STICKS, self.game_state.get_status(ResourceType.STICKS)).data_bind(
             ResourcesColumn.game_state
         )
-
-    def watch_game_state(self, game_state: GameState) -> None:
-        self.game_state = game_state
-
-
-class ColumnsContainer(HorizontalScroll):
-    game_state: reactive[GameState] = reactive(GameState())
-
-    def compose(self) -> ComposeResult:
-        yield ResourcesColumn().data_bind(ColumnsContainer.game_state)
-        yield ProducersColumn().data_bind(ColumnsContainer.game_state)
-        yield UpgradesColumn().data_bind(ColumnsContainer.game_state)
 
     def watch_game_state(self, game_state: GameState) -> None:
         self.game_state = game_state

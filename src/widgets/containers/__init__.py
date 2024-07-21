@@ -1,3 +1,3 @@
 from .row import RowEntry
-from .column import ProducersColumn, ResourcesColumn, ColumnsContainer
+from .column import ProducersColumn, ResourcesColumn, UpgradesColumn
 from .game import GameContainer

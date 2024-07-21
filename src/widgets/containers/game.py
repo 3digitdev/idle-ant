@@ -1,21 +1,26 @@
 from textual.app import ComposeResult
+from textual.containers import HorizontalScroll
 from textual.reactive import reactive
 from textual.widgets import Button, Static
 from constants import ResourceType, ProducerType, UpgradeType
 from game import GameState
-from widgets.containers import ColumnsContainer
+from widgets.containers import ResourcesColumn, ProducersColumn, UpgradesColumn
 
 
 class GameContainer(Static):
     game_state: reactive[GameState] = reactive(GameState(), recompose=True)
 
     def on_mount(self) -> None:
-        self.set_interval(interval=1, callback=self.update_game_state)
+        self.set_interval(interval=1, callback=self.tick)
 
     def compose(self) -> ComposeResult:
-        yield ColumnsContainer().data_bind(GameContainer.game_state)
+        yield HorizontalScroll(
+            ResourcesColumn().data_bind(GameContainer.game_state),
+            ProducersColumn().data_bind(GameContainer.game_state),
+            UpgradesColumn().data_bind(GameContainer.game_state),
+        )
 
-    def update_game_state(self) -> None:
+    def tick(self) -> None:
         self.game_state.tick()
         self.mutate_reactive(GameContainer.game_state)
 

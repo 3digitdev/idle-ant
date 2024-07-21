@@ -2,7 +2,7 @@ from textual.app import ComposeResult
 from textual.containers import HorizontalScroll
 from textual.reactive import reactive
 from textual.widgets import Button, Static
-from shared import ResourceType
+from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.containers import ResourcesColumn, ProducersColumn, UpgradesColumn
 
@@ -12,7 +12,7 @@ class GameContainer(Static):
     game_state: reactive[GameState] = reactive(GameState(), recompose=True)
 
     def on_mount(self) -> None:
-        self.set_interval(interval=1, callback=self.tick)
+        self.set_interval(interval=5, callback=self.tick)
 
     def compose(self) -> ComposeResult:
         yield HorizontalScroll(
@@ -26,10 +26,27 @@ class GameContainer(Static):
         self.mutate_reactive(GameContainer.game_state)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Event handler called when a button is pressed."""
-        # NOTE: This event can't be moved into ResourceRow, or the
-        #       mutate_reactive(ResourceRow.game_state) would end up
-        #       triggering twice and causing bugs
-        if event.button.id == 'gather':
-            self.game_state.resources[ResourceType.FOOD].total += 1
-            self.mutate_reactive(GameContainer.game_state)
+        """
+        Event handler called when a button is pressed.
+
+        HISTORICAL NOTE:  These cases were once put into their respective
+        child widgets.  When I did that, the game would "freeze" the button pressed until
+        the next game tick happened for some reason.  Didn't investigate much.
+
+        IF you have a lot of spare time later, feel free to do a deeper dive.  Until then,
+        they will remain here...
+        """
+        match event.button.id.split('-'):
+            case ['gather']:
+                self.game_state.resources[ResourceType.FOOD].total += 1
+                self.mutate_reactive(GameContainer.game_state)
+            case [obj_type, num] if obj_type in ProducerType:
+                print('  Purchase call (ProducersColumn)')
+                self.game_state.purchase_producer(ProducerType(obj_type), int(num))
+                print('  Mutate call   (ProducersColumn)')
+                self.mutate_reactive(GameContainer.game_state)
+            case [obj_type, num] if obj_type in UpgradeType:
+                self.game_state.purchase_upgrade(UpgradeType(obj_type), int(num))
+                self.mutate_reactive(GameContainer.game_state)
+            case _:
+                pass

@@ -1,7 +1,6 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.containers import ScrollableContainer
-from textual.widgets import Button
 from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.containers import ResourceRow, ProducerRow, UpgradeRow
@@ -32,15 +31,6 @@ class ProducersColumn(ScrollableContainer):
                 ProducersColumn.game_state
             )
 
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Event handler called when a button is pressed."""
-        match event.button.id.split('-'):
-            case [obj_type, num] if obj_type in ProducerType:
-                self.game_state.purchase_producer(ProducerType(obj_type), int(num))
-                self.mutate_reactive(ProducersColumn.game_state)
-            case _:
-                pass
-
 
 class UpgradesColumn(ScrollableContainer):
     BORDER_TITLE = 'Upgrades'
@@ -53,12 +43,3 @@ class UpgradesColumn(ScrollableContainer):
             yield UpgradeRow(UpgradeType(upgrade), self.game_state.get_status(upgrade)).data_bind(
                 UpgradesColumn.game_state
             )
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Event handler called when a button is pressed."""
-        match event.button.id.split('-'):
-            case [obj_type, num] if obj_type in UpgradeType:
-                self.game_state.purchase_upgrade(UpgradeType(obj_type), int(num))
-                self.mutate_reactive(ProducersColumn.game_state)
-            case _:
-                pass

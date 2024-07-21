@@ -13,9 +13,8 @@ class UpgradesColumn(ScrollableContainer):
     game_state: reactive[GameState] = reactive(GameState())
 
     def compose(self) -> ComposeResult:
-        yield UpgradeRow(UpgradeType.STILTS, self.game_state.get_status(UpgradeType.STILTS)).data_bind(
-            UpgradesColumn.game_state
-        )
+        for upgrade in UpgradeType:
+            yield UpgradeRow(upgrade, self.game_state.get_status(upgrade)).data_bind(UpgradesColumn.game_state)
 
 
 class ProducersColumn(ScrollableContainer):
@@ -25,9 +24,8 @@ class ProducersColumn(ScrollableContainer):
     game_state: reactive[GameState] = reactive(GameState())
 
     def compose(self) -> ComposeResult:
-        yield ProducerRow(ProducerType.WORKER, self.game_state.get_status(ProducerType.WORKER)).data_bind(
-            ProducersColumn.game_state
-        )
+        for producer in ProducerType:
+            yield ProducerRow(producer, self.game_state.get_status(producer)).data_bind(ProducersColumn.game_state)
 
 
 class ResourcesColumn(ScrollableContainer):
@@ -37,9 +35,5 @@ class ResourcesColumn(ScrollableContainer):
     game_state: reactive[GameState] = reactive(GameState())
 
     def compose(self) -> ComposeResult:
-        yield ResourceRow(ResourceType.FOOD, self.game_state.get_status(ResourceType.FOOD)).data_bind(
-            ResourcesColumn.game_state
-        )
-        yield ResourceRow(ResourceType.STICKS, self.game_state.get_status(ResourceType.STICKS)).data_bind(
-            ResourcesColumn.game_state
-        )
+        for resource in ResourceType:
+            yield ResourceRow(resource, self.game_state.get_status(resource)).data_bind(ResourcesColumn.game_state)

@@ -35,7 +35,8 @@ class UpgradeType(StrEnum):
         return True
 
 
+# TODO: [FUTURE]:  Add more statuses for more complex interactions.
+#                  Alternatively, simplify this to a boolean if we can
 class Status(Enum):
     DISABLED = auto()
     ENABLED = auto()
-    SOON = auto()

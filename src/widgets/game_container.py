@@ -4,7 +4,7 @@ from textual.reactive import reactive
 from textual.widgets import Button, Static
 from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
-from widgets.containers import ResourcesColumn, ProducersColumn, UpgradesColumn
+from widgets import ResourcesColumn, ProducersColumn, UpgradesColumn
 
 
 class GameContainer(Static):

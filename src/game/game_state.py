@@ -3,13 +3,16 @@ from math import prod
 from typing import Self
 
 from shared import ResourceType, ProducerType, Status, UpgradeType
-from resources import Resource
-from producers import Producer
-from upgrades import Upgrade
+from game.resource import Resource
+from game.producer import Producer
+from game.upgrade import Upgrade
 
 
 @dataclass
 class GameState:
+    # This can be modified to speed the game production up for debugging purposes
+    DEBUG_MULTIPLIER = 1
+
     resources: dict[ResourceType, Resource] = field(
         default_factory=lambda: {
             ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
@@ -19,15 +22,10 @@ class GameState:
     producers: dict[ProducerType, Producer] = field(
         default_factory=lambda: {
             ProducerType.WORKER: Producer(
-                # name=ProducerType.WORKER,
-                # status=Status.ENABLED,
-                # cost=(ResourceType.FOOD, 10),
-                # rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25}
-                # TODO:  DEBUG VALUES TO MAKE THINGS QUICKER
                 name=ProducerType.WORKER,
                 status=Status.ENABLED,
                 cost=(ResourceType.FOOD, 10),
-                rates={ResourceType.FOOD: 2.0, ResourceType.STICKS: 1.0},
+                rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25},
             ),
         }
     )
@@ -101,7 +99,7 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer], 
         # Collect all applicable upgrades for this producer
         usable = [u[p.name] * u.total for u in upgrades if p.name in u.modifiers]
         # Calculate the total produced by this producer by multiplying upgrades and producer rates
-        produced += prod([*[u for u in usable if u > 0.0], p[resource], p.total])
+        produced += prod([*[u for u in usable if u > 0.0], p[resource], p.total]) * GameState.DEBUG_MULTIPLIER
         print(f'{p.name} produces {produced} {resource.name}(s) with {usable} upgrades.')
     total, progress = divmod(produced, 1)
     return Resource(resource, total, progress)

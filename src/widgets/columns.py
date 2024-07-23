@@ -3,7 +3,7 @@ from textual.reactive import reactive
 from textual.containers import ScrollableContainer
 from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
-from widgets.containers import ResourceRow, ProducerRow, UpgradeRow
+from widgets.rows import ResourceRow, ProducerRow, UpgradeRow
 
 
 class ResourcesColumn(ScrollableContainer):

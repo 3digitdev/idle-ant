@@ -14,7 +14,7 @@ class Row(Horizontal):
         super().__init__()
         self.key_type = key_type
         self.status = status
-        classes = ['entry-row']
+        classes = ['entry-row', f'{key_type.lower()}-row']
         if self.key_type == ResourceType.FOOD:
             classes.append('food-row')
         if self.status == Status.DISABLED:
@@ -73,6 +73,10 @@ class ResourceRow(Row):
 class ProducerRow(Row):
     def compose(self) -> ComposeResult:
         yield from self.compose_non_resource()
+
+    def on_mount(self) -> None:
+        cost_str = '\n'.join([f'{c} {r}' for r, c in self.game_state.producers[self.key_type].cost])
+        self.query_one('.entry-value', Static).tooltip = cost_str
 
     def watch_game_state(self, game_state: GameState) -> None:
         super()._game_state(game_state, game_state.producers[self.key_type].total)

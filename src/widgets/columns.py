@@ -25,6 +25,12 @@ class ProducersColumn(ScrollableContainer):
 
     game_state: reactive[GameState] = reactive(GameState())
 
+    def on_mount(self) -> None:
+        for producer in ProducerType:
+            cost_str = '[b]Cost:[/b]\n  '
+            costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.producers[producer].cost])
+            self.query_one(f'.{producer.lower()}-row', ProducerRow).tooltip = cost_str + costs
+
     def compose(self) -> ComposeResult:
         for producer in ProducerType:
             yield ProducerRow(ProducerType(producer), self.game_state.get_status(producer)).data_bind(
@@ -37,6 +43,12 @@ class UpgradesColumn(ScrollableContainer):
     DEFAULT_CLASSES = 'display-column'
 
     game_state: reactive[GameState] = reactive(GameState())
+
+    def on_mount(self) -> None:
+        for upgrade in UpgradeType:
+            cost_str = '[b]Cost:[/b]\n  '
+            costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.upgrades[upgrade].cost])
+            self.query_one(f'.{upgrade.lower()}-row', UpgradeRow).tooltip = cost_str + costs
 
     def compose(self) -> ComposeResult:
         for upgrade in UpgradeType:

@@ -7,7 +7,7 @@ from widgets.rows import ResourceRow, ProducerRow, UpgradeRow
 
 
 class ResourcesColumn(ScrollableContainer):
-    BORDER_TITLE = 'Resources'
+    BORDER_TITLE = '[b]Resources[/b]'
     DEFAULT_CLASSES = 'display-column'
 
     game_state: reactive[GameState] = reactive(GameState())
@@ -20,7 +20,7 @@ class ResourcesColumn(ScrollableContainer):
 
 
 class ProducersColumn(ScrollableContainer):
-    BORDER_TITLE = 'Producers'
+    BORDER_TITLE = '[b]Producers[/b]'
     DEFAULT_CLASSES = 'display-column'
 
     game_state: reactive[GameState] = reactive(GameState())
@@ -39,7 +39,7 @@ class ProducersColumn(ScrollableContainer):
 
 
 class UpgradesColumn(ScrollableContainer):
-    BORDER_TITLE = 'Upgrades'
+    BORDER_TITLE = '[b]Upgrades[/b]'
     DEFAULT_CLASSES = 'display-column'
 
     game_state: reactive[GameState] = reactive(GameState())

@@ -34,9 +34,13 @@ class Row(Horizontal):
         )
 
     def btn_disabled(self, btn: BuyButton, record: dict) -> bool:
-        resource, cost = record[self.key_type].cost
-        can_buy = {str(k): self.game_state.resources[resource].total >= cost * k for k in [1, 5]}
-        return not can_buy[str(btn.amount)]
+        for resource, cost in record[self.key_type].cost:
+            if self.game_state.resources[resource].total < cost * btn.amount:
+                return True
+        return False
+        # resource, cost = record[self.key_type].cost
+        # can_buy = {str(k): self.game_state.resources[resource].total >= cost * k for k in [1, 5]}
+        # return not can_buy[str(btn.amount)]
 
     def update_btn_states(self, record: dict) -> None:
         btns = self.query('.buy')

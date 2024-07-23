@@ -1,5 +1,4 @@
-from collections import defaultdict
-from dataclasses import field, dataclass
+from dataclasses import dataclass
 
 from shared import ResourceType, ProducerType, UpgradeType, Status
 
@@ -13,10 +12,10 @@ class Upgrade:
     """
 
     name: UpgradeType
-    cost: tuple[ResourceType, int] | None = None
+    cost: list[tuple[ResourceType, int]]
+    modifiers: dict[ProducerType, float]
     total: int = 0
     status: Status = Status.DISABLED
-    modifiers: dict[ProducerType, float] = field(default_factory=lambda: defaultdict(float))
 
     def __getitem__(self, producer: ProducerType) -> float:
         return self.modifiers[producer]

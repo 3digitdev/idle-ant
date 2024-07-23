@@ -24,7 +24,7 @@ class GameState:
             ProducerType.WORKER: Producer(
                 name=ProducerType.WORKER,
                 status=Status.ENABLED,
-                cost=(ResourceType.FOOD, 10),
+                cost=[(ResourceType.FOOD, 10)],
                 rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25},
             ),
         }
@@ -33,7 +33,9 @@ class GameState:
     upgrades: dict[UpgradeType, Upgrade] = field(
         default_factory=lambda: {
             UpgradeType.STILTS: Upgrade(
-                name=UpgradeType.STILTS, cost=(ResourceType.STICKS, 10), total=0, modifiers={ProducerType.WORKER: 1.5}
+                name=UpgradeType.STILTS,
+                cost=[(ResourceType.FOOD, 5), (ResourceType.STICKS, 6)],
+                modifiers={ProducerType.WORKER: 1.5},
             ),
         }
     )
@@ -56,20 +58,20 @@ class GameState:
         return Status.DISABLED
 
     def purchase_producer(self, producer: ProducerType, amount: int) -> None:
-        if self.producers[producer].cost:
-            resource, cost = self.producers[producer].cost
-            if not self.resources[resource].total >= cost * amount:
-                return
+        if not all(self.resources[r].total >= c * amount for r, c in self.producers[producer].cost):
+            # Can't afford it with one or more resources
+            return
+        for resource, cost in self.producers[producer].cost:
             self.resources[resource].total -= cost * amount
-            self.producers[producer].total += amount
+        self.producers[producer].total += amount
 
     def purchase_upgrade(self, upgrade: UpgradeType, amount: int) -> None:
-        if self.upgrades[upgrade].cost:
-            resource, cost = self.upgrades[upgrade].cost
-            if not self.resources[resource].total >= cost * amount:
-                return
+        if not all(self.resources[r].total >= c * amount for r, c in self.upgrades[upgrade].cost):
+            # Can't afford it with one or more resources
+            return
+        for resource, cost in self.upgrades[upgrade].cost:
             self.resources[resource].total -= cost * amount
-            self.upgrades[upgrade].total += amount
+        self.upgrades[upgrade].total += amount
 
     def update_visibilities(self: Self) -> None:
         # TODO:  [FUTURE]:  Some animation or effect to show new entities being revealed!
@@ -78,13 +80,11 @@ class GameState:
                 resource.status = Status.ENABLED
             self.resources[rtype] = resource
         for ptype, producer in self.producers.items():
-            resource, _ = producer.cost
-            if self.resources[resource].status == Status.ENABLED:
+            if all(self.resources[r].status == Status.ENABLED for r, _ in producer.cost):
                 producer.status = Status.ENABLED
             self.producers[ptype] = producer
         for utype, upgrade in self.upgrades.items():
-            resource, _ = upgrade.cost
-            if self.resources[resource].status == Status.ENABLED:
+            if all(self.resources[r].status == Status.ENABLED for r, _ in upgrade.cost):
                 upgrade.status = Status.ENABLED
             self.upgrades[utype] = upgrade
 

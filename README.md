@@ -4,6 +4,24 @@ Idle Clicker TUI Game.  With Ants.
 
 ## IDEAS
 
+Click food
+Food buys Ants
+Ants gather food
+First upgrade: Queen
+Queen unlocks purchasing Workers
+Workers gather Sticks
+Sticks buy first upgrade: Stilts
+Stilts unlock purchasing Haulers (Food + Sticks)
+Haulers gather Rocks
+Rocks buy second upgrade: Wheels (early) -- upgrade for Haulers/Workers
+Rocks buy third upgrade: Clubs
+Clubs unlock purchasing Soldiers (Food + Sticks + Rocks)
+Soldiers gather Land (mm of land)
+Land buys upgrade: Farming (Food + Land) -- upgrade for Ants
+TODO:  WHAT NEXT?
+
+- Popup toast message each time something is unlocked
+  - Might need a queue of messages so a large group of unlocks doesn't spam the screen 
 - "Prestige" is colonization of new planet.  Old planet(s) are "shipping" food to the new planet, providing the prestige multiplier
 
 

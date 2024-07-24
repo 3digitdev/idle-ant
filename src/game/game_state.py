@@ -3,9 +3,9 @@ from math import prod
 from typing import Self
 
 from shared import ResourceType, ProducerType, Status, UpgradeType
-from game.resource import Resource
-from game.producer import Producer
-from game.upgrade import Upgrade
+from game.resource import Resource, ALL_RESOURCES
+from game.producer import Producer, ALL_PRODUCERS
+from game.upgrade import Upgrade, ALL_UPGRADES
 
 
 @dataclass
@@ -13,32 +13,9 @@ class GameState:
     # This can be modified to speed the game production up for debugging purposes
     DEBUG_MULTIPLIER = 1
 
-    resources: dict[ResourceType, Resource] = field(
-        default_factory=lambda: {
-            ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
-            ResourceType.STICKS: Resource(name=ResourceType.STICKS),
-        }
-    )
-    producers: dict[ProducerType, Producer] = field(
-        default_factory=lambda: {
-            ProducerType.WORKER: Producer(
-                name=ProducerType.WORKER,
-                status=Status.ENABLED,
-                cost=[(ResourceType.FOOD, 10)],
-                rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25},
-            ),
-        }
-    )
-    # NOTE:  ALL UPGRADES' MODIFIERS SHOULD BE 1.0 OR GREATER TO AVOID NEGATIVE PRODUCTION RATES!
-    upgrades: dict[UpgradeType, Upgrade] = field(
-        default_factory=lambda: {
-            UpgradeType.STILTS: Upgrade(
-                name=UpgradeType.STILTS,
-                cost=[(ResourceType.FOOD, 5), (ResourceType.STICKS, 6)],
-                modifiers={ProducerType.WORKER: 1.5},
-            ),
-        }
-    )
+    resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
+    producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
+    upgrades: dict[UpgradeType, Upgrade] = field(default_factory=lambda: ALL_UPGRADES)
 
     def tick(self) -> None:
         for rtype, resource in self.resources.items():
@@ -102,4 +79,4 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer], 
         produced += prod([*[u for u in usable if u > 0.0], p[resource], p.total]) * GameState.DEBUG_MULTIPLIER
         print(f'{p.name} produces {produced} {resource.name}(s) with {usable} upgrades.')
     total, progress = divmod(produced, 1)
-    return Resource(resource, total, progress)
+    return Resource(resource, int(total), progress)

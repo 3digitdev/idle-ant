@@ -24,3 +24,9 @@ class Resource:
 
     def __str__(self) -> str:
         return f'{self.name}: {self.total}'
+
+
+ALL_RESOURCES = {
+    ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
+    ResourceType.STICKS: Resource(name=ResourceType.STICKS),
+}

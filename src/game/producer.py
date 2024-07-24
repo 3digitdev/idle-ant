@@ -23,3 +23,19 @@ class Producer:
 
     def __setitem__(self, resource: ResourceType, value: float) -> None:
         self.rates[resource] = value
+
+
+ALL_PRODUCERS = {
+    ProducerType.ANT: Producer(
+        name=ProducerType.ANT,
+        status=Status.ENABLED,
+        cost=[(ResourceType.FOOD, 5)],
+        rates={ResourceType.FOOD: 0.1},
+    ),
+    ProducerType.WORKER: Producer(
+        name=ProducerType.WORKER,
+        status=Status.ENABLED,
+        cost=[(ResourceType.FOOD, 10)],
+        rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25},
+    ),
+}

@@ -14,6 +14,7 @@ class ResourceType(StrEnum):
 
 
 class ProducerType(StrEnum):
+    ANT = 'Ants'
     WORKER = 'Workers'
 
     def __contains__(self, item):

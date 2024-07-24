@@ -22,3 +22,13 @@ class Upgrade:
 
     def __setitem__(self, producer: ProducerType, value: float) -> None:
         self.modifiers[producer] = value
+
+
+# NOTE:  ALL UPGRADES' MODIFIERS SHOULD BE 1.0 OR GREATER TO AVOID NEGATIVE PRODUCTION RATES!
+ALL_UPGRADES = {
+    UpgradeType.STILTS: Upgrade(
+        name=UpgradeType.STILTS,
+        cost=[(ResourceType.FOOD, 5), (ResourceType.STICKS, 6)],
+        modifiers={ProducerType.WORKER: 2.0},
+    ),
+}

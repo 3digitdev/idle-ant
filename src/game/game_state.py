@@ -57,6 +57,9 @@ class GameState:
             self.resources[resource].total -= cost
         self.upgrades[upgrade].total = 1
         self.upgrades[upgrade].purchased = True
+        for producer, modifier in self.upgrades[upgrade].modifiers.items():
+            for resource, rate in self.producers[producer].rates.items():
+                self.producers[producer][resource] = rate * modifier
 
     def update_visibilities(self: Self) -> None:
         # TODO:  [FUTURE]:  Some animation or effect to show new entities being revealed!
@@ -76,9 +79,7 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer], 
     """
     produced: float = 0.0
     for p in [pr for pr in producers if resource in pr.rates]:
-        # Collect all applicable upgrades for this producer
-        usable = [u[p.name] * u.total for u in upgrades if p.name in u.modifiers]
-        # Calculate the total produced by this producer by multiplying upgrades and producer rates
-        produced += prod([*[u for u in usable if u > 0.0], p[resource], p.total]) * GameState.DEBUG_MULTIPLIER
+        # Calculate the total produced by this producer by multiplying producer rates
+        produced += prod([p[resource], p.total, GameState.DEBUG_MULTIPLIER])
     total, progress = divmod(produced, 1)
     return Resource(resource, int(total), progress)

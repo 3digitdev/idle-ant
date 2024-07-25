@@ -33,7 +33,7 @@ class ProducersColumn(ScrollableContainer):
                 gather_rates=self.game_state.gather_rates(producer),
             ).data_bind(ProducersColumn.game_state)
             row.border_title = f'[b]{producer}[/b] ({self.game_state.producers[producer].total})'
-            row.border_subtitle = '[b]Cost:[/b] ' + '|'.join(
+            row.border_subtitle = '[b]Cost:[/b] ' + ' | '.join(
                 [f'{c} {r}' for r, c in self.game_state.producers[producer].cost]
             )
             yield row
@@ -53,7 +53,7 @@ class UpgradesColumn(ScrollableContainer):
                 upgrade_text=self.game_state.upgrades[upgrade].info,
             ).data_bind(UpgradesColumn.game_state)
             row.border_title = f'[b]{upgrade}[/b] ({self.game_state.upgrades[upgrade].total})'
-            row.border_subtitle = '[b]Cost:[/b] ' + '|'.join(
+            row.border_subtitle = '[b]Cost:[/b] ' + ' | '.join(
                 [f'{c} {r}' for r, c in self.game_state.upgrades[upgrade].cost]
             )
             yield row

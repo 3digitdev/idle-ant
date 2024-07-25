@@ -26,6 +26,7 @@ GameContainer Button #click {
 
 .entry-row {
     height: 3;
+    border: solid white;
 }
 
 .food-row {
@@ -61,6 +62,12 @@ GameContainer Button #click {
     dock: right;
 }
 
+.buy-upgrade {
+    width: 7;
+    min-width: 7;
+    text-align: center;
+}
+
 GameClock {
     background: $boost;
     content-align: right middle;
@@ -69,7 +76,7 @@ GameClock {
 
 .display-column {
     padding: 1;
-    width: 30;
+    width: 50;
     background: $boost;
     border: round white;
 }

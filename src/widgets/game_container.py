@@ -38,7 +38,7 @@ class GameContainer(Static):
         """
         match event.button.id.split('-'):
             case ['gather']:
-                self.game_state.resources[ResourceType.FOOD].total += 1 * self.game_state.DEBUG_MULTIPLIER
+                self.game_state.resources[ResourceType.FOOD].total += int(1 * self.game_state.DEBUG_MULTIPLIER)
                 self.mutate_reactive(GameContainer.game_state)
             case [*obj_type, num] if ' '.join(obj_type) in ProducerType:
                 obj_type = ' '.join(obj_type)

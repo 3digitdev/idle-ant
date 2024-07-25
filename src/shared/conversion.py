@@ -1,7 +1,7 @@
 from shared import ResourceType, ProducerType, UpgradeType
 
 
-def abbrev_num(number: int) -> str:
+def abbrev_num(number: int | float) -> str:
     """Helpful for displaying large numbers as the game progresses"""
     suffixes = [
         (1e30, 'Non'),

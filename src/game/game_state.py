@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from math import prod
 from typing import Self
 
-from shared import ResourceType, ProducerType, Status, UpgradeType
+from shared import ResourceType, ProducerType, Status, UpgradeType, abbrev_num
 from game.resource import Resource, ALL_RESOURCES
 from game.producer import Producer, ALL_PRODUCERS
 from game.upgrade import Upgrade, ALL_UPGRADES
@@ -11,7 +11,7 @@ from game.upgrade import Upgrade, ALL_UPGRADES
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 1.0
+    DEBUG_MULTIPLIER = 10.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
@@ -33,6 +33,13 @@ class GameState:
             case t if t in UpgradeType:
                 return self.upgrades[t].status
         return Status.DISABLED
+
+    def gather_rates(self, key_type: ProducerType) -> str:
+        p = self.producers[key_type]
+        gather_txt = '[i]Gathers '
+        gather_txt += ', '.join([f'{abbrev_num(r * p.total)} {n}' for n, r in p.rates.items()])
+        gather_txt += ' per second[/i]'
+        return gather_txt
 
     def purchase_producer(self, producer: ProducerType, amount: int) -> None:
         if not all(self.resources[r].total >= c * amount for r, c in self.producers[producer].cost):

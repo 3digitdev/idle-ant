@@ -15,6 +15,7 @@ class Upgrade:
     name: UpgradeType
     cost: list[tuple[ResourceType, int]]
     modifiers: dict[ProducerType, float]
+    info: str
     total: int = 0
     purchased: bool = False
     status: Status = Status.DISABLED
@@ -41,6 +42,7 @@ ALL_UPGRADES = {
         modifiers={ProducerType.ANT: 2.0},
         check_fn=lambda state: not bought(UpgradeType.FIRST_QUEEN, state)
         and state.producers[ProducerType.ANT].total >= 100,
+        info='[green]2x[/green] [b]Ant[/b] production rate\nUnlocks Worker',
     ),
     UpgradeType.STILTS: Upgrade(
         name=UpgradeType.STILTS,
@@ -48,5 +50,6 @@ ALL_UPGRADES = {
         modifiers={ProducerType.WORKER: 2.0},
         check_fn=lambda state: not bought(UpgradeType.STILTS, state)
         and state.producers[ProducerType.WORKER].total >= 1,
+        info='[green]2x[/green] [b]Worker[/b] production rate',
     ),
 }

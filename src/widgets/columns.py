@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.containers import ScrollableContainer
-from shared import ResourceType, ProducerType, UpgradeType, type_class
+from shared import ResourceType, ProducerType, UpgradeType
 from game import GameState
 from widgets.rows import ResourceRow, ProducerRow, UpgradeRow
 
@@ -25,17 +25,18 @@ class ProducersColumn(ScrollableContainer):
 
     game_state: reactive[GameState] = reactive(GameState())
 
-    def on_mount(self) -> None:
-        for producer in ProducerType:
-            cost_str = '[b]Cost:[/b]\n  '
-            costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.producers[producer].cost])
-            self.query_one(f'.{type_class(producer)}-row', ProducerRow).tooltip = cost_str + costs
-
     def compose(self) -> ComposeResult:
         for producer in ProducerType:
-            yield ProducerRow(ProducerType(producer), self.game_state.get_status(producer)).data_bind(
-                ProducersColumn.game_state
+            row = ProducerRow(
+                key_type=ProducerType(producer),
+                status=self.game_state.get_status(producer),
+                gather_rates=self.game_state.gather_rates(producer),
+            ).data_bind(ProducersColumn.game_state)
+            row.border_title = f'[b]{producer}[/b] ({self.game_state.producers[producer].total})'
+            row.border_subtitle = '[b]Cost:[/b] ' + '|'.join(
+                [f'{c} {r}' for r, c in self.game_state.producers[producer].cost]
             )
+            yield row
 
 
 class UpgradesColumn(ScrollableContainer):
@@ -44,14 +45,15 @@ class UpgradesColumn(ScrollableContainer):
 
     game_state: reactive[GameState] = reactive(GameState())
 
-    def on_mount(self) -> None:
-        for upgrade in UpgradeType:
-            cost_str = '[b]Cost:[/b]\n  '
-            costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.upgrades[upgrade].cost])
-            self.query_one(f'.{type_class(upgrade)}-row', UpgradeRow).tooltip = cost_str + costs
-
     def compose(self) -> ComposeResult:
         for upgrade in UpgradeType:
-            yield UpgradeRow(UpgradeType(upgrade), self.game_state.get_status(upgrade)).data_bind(
-                UpgradesColumn.game_state
+            row = UpgradeRow(
+                key_type=UpgradeType(upgrade),
+                status=self.game_state.get_status(upgrade),
+                upgrade_text=self.game_state.upgrades[upgrade].info,
+            ).data_bind(UpgradesColumn.game_state)
+            row.border_title = f'[b]{upgrade}[/b] ({self.game_state.upgrades[upgrade].total})'
+            row.border_subtitle = '[b]Cost:[/b] ' + '|'.join(
+                [f'{c} {r}' for r, c in self.game_state.upgrades[upgrade].cost]
             )
+            yield row

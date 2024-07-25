@@ -24,6 +24,14 @@ GameContainer Button #click {
     border: round white;
 }
 
+.entry-row {
+    height: 3;
+}
+
+.food-row {
+    height: 5;
+}
+
 .gather-btn {
     min-width: 8;
     width: 8;

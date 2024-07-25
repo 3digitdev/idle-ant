@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Self
+from typing import Self, Callable, Any
 
-from shared import ResourceType, Status
+from shared import ResourceType, Status, ProducerType
 
 
 @dataclass
@@ -12,6 +12,9 @@ class Resource:
     total: int = 0
     progress: float = 0.0
     status: Status = Status.DISABLED
+    # A function that returns whether status should be enabled
+    # "Any" here is actually GameState, but we can't import it here due to circular imports
+    check_fn: Callable[[Any], bool] = lambda _: True
 
     def __add__(self, other: Self | float) -> Self:
         if not isinstance(other, float):
@@ -27,6 +30,16 @@ class Resource:
 
 
 ALL_RESOURCES = {
-    ResourceType.FOOD: Resource(name=ResourceType.FOOD, status=Status.ENABLED),
-    ResourceType.STICKS: Resource(name=ResourceType.STICKS),
+    ResourceType.FOOD: Resource(
+        name=ResourceType.FOOD,
+        status=Status.ENABLED,
+    ),
+    ResourceType.STICKS: Resource(
+        name=ResourceType.STICKS,
+        check_fn=lambda state: state.producers[ProducerType.WORKER].total > 0,
+    ),
+    ResourceType.STONES: Resource(
+        name=ResourceType.STONES,
+        check_fn=lambda state: state.producers[ProducerType.HAULER].total > 0,
+    ),
 }

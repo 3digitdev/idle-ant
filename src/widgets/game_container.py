@@ -12,7 +12,7 @@ class GameContainer(Static):
     game_state: reactive[GameState] = reactive(GameState(), recompose=True)
 
     def on_mount(self) -> None:
-        self.set_interval(interval=5, callback=self.tick)
+        self.set_interval(interval=1, callback=self.tick)
 
     def compose(self) -> ComposeResult:
         yield HorizontalScroll(
@@ -40,13 +40,13 @@ class GameContainer(Static):
             case ['gather']:
                 self.game_state.resources[ResourceType.FOOD].total += 1
                 self.mutate_reactive(GameContainer.game_state)
-            case [obj_type, num] if obj_type in ProducerType:
-                print('  Purchase call (ProducersColumn)')
+            case [*obj_type, num] if ' '.join(obj_type) in ProducerType:
+                obj_type = ' '.join(obj_type)
                 self.game_state.purchase_producer(ProducerType(obj_type), int(num))
-                print('  Mutate call   (ProducersColumn)')
                 self.mutate_reactive(GameContainer.game_state)
-            case [obj_type, num] if obj_type in UpgradeType:
-                self.game_state.purchase_upgrade(UpgradeType(obj_type), int(num))
+            case [*obj_type, 'upgrade'] if ' '.join(obj_type) in UpgradeType:
+                obj_type = ' '.join(obj_type)
+                self.game_state.purchase_upgrade(UpgradeType(obj_type))
                 self.mutate_reactive(GameContainer.game_state)
             case _:
                 pass

@@ -11,7 +11,7 @@ from game.upgrade import Upgrade, ALL_UPGRADES
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 1
+    DEBUG_MULTIPLIER = 1.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
@@ -42,28 +42,24 @@ class GameState:
             self.resources[resource].total -= cost * amount
         self.producers[producer].total += amount
 
-    def purchase_upgrade(self, upgrade: UpgradeType, amount: int) -> None:
-        if not all(self.resources[r].total >= c * amount for r, c in self.upgrades[upgrade].cost):
+    def purchase_upgrade(self, upgrade: UpgradeType) -> None:
+        if not all(self.resources[r].total >= c for r, c in self.upgrades[upgrade].cost):
             # Can't afford it with one or more resources
             return
         for resource, cost in self.upgrades[upgrade].cost:
-            self.resources[resource].total -= cost * amount
-        self.upgrades[upgrade].total += amount
+            self.resources[resource].total -= cost
+        self.upgrades[upgrade].total = 1
+        self.upgrades[upgrade].purchased = True
 
     def update_visibilities(self: Self) -> None:
         # TODO:  [FUTURE]:  Some animation or effect to show new entities being revealed!
         for rtype, resource in self.resources.items():
-            if resource.total > 0:
-                resource.status = Status.ENABLED
-            self.resources[rtype] = resource
+            # TODO: check_fn isn't working properly!
+            self.resources[rtype].status = Status.from_bool(resource.check_fn(self))
         for ptype, producer in self.producers.items():
-            if all(self.resources[r].status == Status.ENABLED for r, _ in producer.cost):
-                producer.status = Status.ENABLED
-            self.producers[ptype] = producer
+            self.producers[ptype].status = Status.from_bool(producer.check_fn(self))
         for utype, upgrade in self.upgrades.items():
-            if all(self.resources[r].status == Status.ENABLED for r, _ in upgrade.cost):
-                upgrade.status = Status.ENABLED
-            self.upgrades[utype] = upgrade
+            self.upgrades[utype].status = Status.from_bool(upgrade.check_fn(self))
 
 
 def calculate_resource_value(resource: ResourceType, producers: list[Producer], upgrades: list[Upgrade]) -> Resource:
@@ -77,6 +73,5 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer], 
         usable = [u[p.name] * u.total for u in upgrades if p.name in u.modifiers]
         # Calculate the total produced by this producer by multiplying upgrades and producer rates
         produced += prod([*[u for u in usable if u > 0.0], p[resource], p.total]) * GameState.DEBUG_MULTIPLIER
-        print(f'{p.name} produces {produced} {resource.name}(s) with {usable} upgrades.')
     total, progress = divmod(produced, 1)
     return Resource(resource, int(total), progress)

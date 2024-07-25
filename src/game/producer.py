@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from typing import Callable, Any
 
-from shared import ResourceType, ProducerType, Status
+from shared import ResourceType, ProducerType, Status, UpgradeType
 
 
 @dataclass
@@ -17,6 +18,9 @@ class Producer:
     rates: dict[ResourceType, float]
     total: int = 0
     status: Status = Status.DISABLED
+    # A function that returns whether status should be enabled
+    # "Any" here is actually GameState, but we can't import it here due to circular imports
+    check_fn: Callable[[Any], bool] = lambda _: True
 
     def __getitem__(self, resource: ResourceType) -> float:
         return self.rates[resource]
@@ -34,8 +38,14 @@ ALL_PRODUCERS = {
     ),
     ProducerType.WORKER: Producer(
         name=ProducerType.WORKER,
-        status=Status.ENABLED,
-        cost=[(ResourceType.FOOD, 10)],
-        rates={ResourceType.FOOD: 0.5, ResourceType.STICKS: 0.25},
+        cost=[(ResourceType.FOOD, 50)],
+        rates={ResourceType.STICKS: 0.1},
+        check_fn=lambda state: state.upgrades[UpgradeType.FIRST_QUEEN].purchased,
+    ),
+    ProducerType.HAULER: Producer(
+        name=ProducerType.HAULER,
+        cost=[(ResourceType.FOOD, 100), (ResourceType.STICKS, 50)],
+        rates={ResourceType.STONES: 0.1},
+        check_fn=lambda state: state.resources[ResourceType.STICKS].status == Status.ENABLED,
     ),
 }

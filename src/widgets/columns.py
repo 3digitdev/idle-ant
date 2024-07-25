@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.containers import ScrollableContainer
-from shared import ResourceType, ProducerType, UpgradeType
+from shared import ResourceType, ProducerType, UpgradeType, type_class
 from game import GameState
 from widgets.rows import ResourceRow, ProducerRow, UpgradeRow
 
@@ -29,7 +29,7 @@ class ProducersColumn(ScrollableContainer):
         for producer in ProducerType:
             cost_str = '[b]Cost:[/b]\n  '
             costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.producers[producer].cost])
-            self.query_one(f'.{producer.lower()}-row', ProducerRow).tooltip = cost_str + costs
+            self.query_one(f'.{type_class(producer)}-row', ProducerRow).tooltip = cost_str + costs
 
     def compose(self) -> ComposeResult:
         for producer in ProducerType:
@@ -48,7 +48,7 @@ class UpgradesColumn(ScrollableContainer):
         for upgrade in UpgradeType:
             cost_str = '[b]Cost:[/b]\n  '
             costs = '\n  '.join([f'[b]{c}[/b] {r}' for r, c in self.game_state.upgrades[upgrade].cost])
-            self.query_one(f'.{upgrade.lower()}-row', UpgradeRow).tooltip = cost_str + costs
+            self.query_one(f'.{type_class(upgrade)}-row', UpgradeRow).tooltip = cost_str + costs
 
     def compose(self) -> ComposeResult:
         for upgrade in UpgradeType:

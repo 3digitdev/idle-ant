@@ -31,5 +31,10 @@ line-length = 120
 [tool.ruff.format]
 quote-style = "single"
 
+[tool.ruff.lint]
+ignore = [
+    "E731",  # Need to use assigned lambdas, what a silly setting.
+]
+
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401"]

@@ -1,3 +1,6 @@
+from shared import ResourceType, ProducerType, UpgradeType
+
+
 def abbrev_num(number: int) -> str:
     """Helpful for displaying large numbers as the game progresses"""
     suffixes = [
@@ -16,3 +19,8 @@ def abbrev_num(number: int) -> str:
         if number >= threshold:
             return f'{number / threshold:.2f}{suffix}'
     return str(number)
+
+
+def type_class(type: ResourceType | ProducerType | UpgradeType) -> str:
+    """Returns the class name for the given type"""
+    return type.replace(' ', '-')

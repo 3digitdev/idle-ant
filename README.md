@@ -11,16 +11,16 @@ First upgrade: Queen (unlocks `Workers` [Food], 2x `Ants` production)
 `Workers` gather Sticks
 Sticks buy upgrades:
   Stilts (unlocks `Haulers [Food + Sticks]`)
-  Pack Frame (2x `Workers` production [Sticks])
+  Pack Frame (2x `Ants`/`Workers` production [Sticks])
 Stilts unlock purchasing `Haulers` (Food + Sticks)
-`Haulers` gather Rocks
-Rocks buy upgrades:
-  Wheels (2x `Workers`/`Haulers` production [Food + Sticks + Rocks]) -- EXPENSIVE
-  Clubs (unlocks `Soldiers [Food + Sticks + Rocks]` [Sticks + Rocks])
+`Haulers` gather Stones
+Stones buy upgrades:
+  Wheels (2x `Workers`/`Haulers` production [Food + Sticks + Stones]) -- EXPENSIVE
+  Clubs (unlocks `Soldiers [Food + Sticks + Stones]` [Sticks + Stones])
 `Soldiers` gather Land (mm of land)
 Land buys upgrades:
   Farming (2x `Ants` production [Food + Land])
-  Quarry  (2x `Haulers` production [Sticks + Rocks + Land])
+  Quarry  (2x `Haulers` production [Sticks + Stones + Land])
   Outposts (2x `Soldiers` production [Food + Sticks + Land])
 TODO:  WHAT NEXT?
 

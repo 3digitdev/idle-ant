@@ -14,7 +14,7 @@ COST_SCALE = 1.15
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 5.0
+    DEBUG_MULTIPLIER = 1.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)

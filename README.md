@@ -44,6 +44,14 @@ TODO:  WHAT NEXT?
 - "Prestige" is colonization of new planet.  Old planet(s) are "shipping" food to the new planet, providing the prestige multiplier
 
 
+## Balance Notes
+
+- Need land-based upgrade for Worker
+- Less sticks cost for Quarry (3-4k)
+- Swap costs of Wheel and Club
+- Orange color for Producer names
+
+
 ## Cookie Clicker Notes
 
 0.15x scaling on costs

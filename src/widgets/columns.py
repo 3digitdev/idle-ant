@@ -50,7 +50,7 @@ class ProducersColumn(ScrollableContainer):
                 status=self.game_state.get_status(producer),
                 gather_rates=self.game_state.gather_rates(producer),
             ).data_bind(ProducersColumn.game_state)
-            row.border_title = f'[b]{producer}[/b] ({self.game_state.producers[producer].total})'
+            row.border_title = f'[b cyan]{producer}[/] ({self.game_state.producers[producer].total})'
             row.border_subtitle = build_cost_subtitle(self.game_state.producers, self.game_state.resources, producer)
             yield row
 
@@ -68,6 +68,7 @@ class UpgradesColumn(ScrollableContainer):
                 status=self.game_state.get_status(upgrade),
                 upgrade_text=self.game_state.upgrades[upgrade].info,
             ).data_bind(UpgradesColumn.game_state)
-            row.border_title = f'[b]{upgrade}[/b] ({self.game_state.upgrades[upgrade].total})'
+            # TODO: Add back parenthetical total here...?
+            row.border_title = f'[b]{upgrade}[/b]'
             row.border_subtitle = build_cost_subtitle(self.game_state.upgrades, self.game_state.resources, upgrade)
             yield row

@@ -19,6 +19,7 @@ class GameState:
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
     upgrades: dict[UpgradeType, Upgrade] = field(default_factory=lambda: ALL_UPGRADES)
+    click_modifier: float = 1.0
 
     def tick(self) -> None:
         for rtype, resource in self.resources.items():
@@ -71,6 +72,9 @@ class GameState:
         self.upgrades[upgrade].total = 1
         self.upgrades[upgrade].purchased = True
         for producer, modifier in self.upgrades[upgrade].modifiers.items():
+            if producer == 'CLICK':
+                self.click_modifier *= modifier
+                continue
             for resource, rate in self.producers[producer].rates.items():
                 self.producers[producer][resource] = rate * modifier
 

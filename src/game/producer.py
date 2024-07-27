@@ -40,19 +40,19 @@ ALL_PRODUCERS = {
     ProducerType.WORKER: Producer(
         name=ProducerType.WORKER,
         cost={ResourceType.FOOD: 50},
-        rates={ResourceType.STICKS: 0.3},
+        rates={ResourceType.STICKS: 0.5},
         check_fn=lambda state: state.upgrades[UpgradeType.FIRST_QUEEN].purchased,
     ),
     ProducerType.HAULER: Producer(
         name=ProducerType.HAULER,
         cost={ResourceType.FOOD: 100, ResourceType.STICKS: 50},
-        rates={ResourceType.STONES: 0.3},
+        rates={ResourceType.STONES: 0.5},
         check_fn=lambda state: state.resources[ResourceType.STICKS].status == Status.ENABLED,
     ),
     ProducerType.SOLDIER: Producer(
         name=ProducerType.SOLDIER,
         cost={ResourceType.FOOD: 100, ResourceType.STICKS: 100, ResourceType.STONES: 50},
-        rates={ResourceType.LAND: 0.3},
+        rates={ResourceType.LAND: 0.5},
         check_fn=lambda state: state.upgrades[UpgradeType.CLUB].purchased,
     ),
 }

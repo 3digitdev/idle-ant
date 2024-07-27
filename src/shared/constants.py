@@ -35,11 +35,13 @@ class ProducerType(StrEnum):
 
 class UpgradeType(StrEnum):
     FIRST_QUEEN = 'First Queen'
+    SUGAR_WATER = 'Sugar Water'
     STILTS = 'Stilts'
     PACK_FRAME = 'Pack Frame'
     WHEEL = 'Wheel'
     CLUB = 'Club'
     FARMING = 'Farming'
+    FOREST = 'Forest'
     QUARRY = 'Quarry'
     OUTPOST = 'Outpost'
 

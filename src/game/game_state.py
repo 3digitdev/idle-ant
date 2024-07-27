@@ -14,7 +14,7 @@ COST_SCALE = 1.15
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 2.0
+    DEBUG_MULTIPLIER = 5.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
@@ -46,7 +46,7 @@ class GameState:
 
     def purchase_producer(self, producer: ProducerType, amount: int) -> None:
         purchased = 0
-        # We must loop here to allow cost to scale in between purchases of more than 1 producers
+        # We must loop here to allow cost to scale in between purchases of more than 1 producer
         while True:
             new_cost = self.producers[producer].cost
             if not all(self.resources[r].total >= c for r, c in new_cost.items()):

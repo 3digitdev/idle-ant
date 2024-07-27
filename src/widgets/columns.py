@@ -1,9 +1,27 @@
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.containers import ScrollableContainer
-from shared import ResourceType, ProducerType, UpgradeType
+
+from game.producer import Producer
+from game.resource import Resource
+from game.upgrade import Upgrade
+from shared import ResourceType, ProducerType, UpgradeType, abbrev_num
 from game import GameState
 from widgets.rows import ResourceRow, ProducerRow, UpgradeRow
+
+
+type T = ProducerType | UpgradeType
+type U = Producer | Upgrade
+
+
+def build_cost_subtitle(record: dict[T, U], resources: dict[ResourceType, Resource], key: T) -> str:
+    out = []
+    for resource, cost in record[key].cost.items():
+        if resources[resource].total < cost:
+            out.append(f'[red]{abbrev_num(cost)} {resource}[/red]')
+        else:
+            out.append(f'[green]{abbrev_num(cost)} {resource}[/green]')
+    return f'[b]Cost:[/b] {" | ".join(out)}'
 
 
 class ResourcesColumn(ScrollableContainer):
@@ -33,9 +51,7 @@ class ProducersColumn(ScrollableContainer):
                 gather_rates=self.game_state.gather_rates(producer),
             ).data_bind(ProducersColumn.game_state)
             row.border_title = f'[b]{producer}[/b] ({self.game_state.producers[producer].total})'
-            row.border_subtitle = '[b]Cost:[/b] ' + ' | '.join(
-                [f'{c} {r}' for r, c in self.game_state.producers[producer].cost.items()]
-            )
+            row.border_subtitle = build_cost_subtitle(self.game_state.producers, self.game_state.resources, producer)
             yield row
 
 
@@ -53,7 +69,5 @@ class UpgradesColumn(ScrollableContainer):
                 upgrade_text=self.game_state.upgrades[upgrade].info,
             ).data_bind(UpgradesColumn.game_state)
             row.border_title = f'[b]{upgrade}[/b] ({self.game_state.upgrades[upgrade].total})'
-            row.border_subtitle = '[b]Cost:[/b] ' + ' | '.join(
-                [f'{c} {r}' for r, c in self.game_state.upgrades[upgrade].cost.items()]
-            )
+            row.border_subtitle = build_cost_subtitle(self.game_state.upgrades, self.game_state.resources, upgrade)
             yield row

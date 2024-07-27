@@ -42,30 +42,30 @@ ALL_UPGRADES = {
         modifiers={ProducerType.ANT: 2.0},
         check_fn=lambda state: not bought(UpgradeType.FIRST_QUEEN, state)
         and state.producers[ProducerType.ANT].total >= 25,
-        info='[green]2x[/green] [b]Ant[/b] rate\nUnlocks [b]Worker[/b]',
+        info='[green]2x[/green] [b]Ant[/b] rate; Unlocks [b]Worker[/b]',
     ),
     UpgradeType.STILTS: Upgrade(
         name=UpgradeType.STILTS,
         cost={ResourceType.FOOD: 500, ResourceType.STICKS: 250},
-        modifiers={ProducerType.ANT: 2.0, ProducerType.WORKER: 2.0},
+        modifiers={ProducerType.ANT: 3.0},
         check_fn=lambda state: not bought(UpgradeType.STILTS, state)
         and state.producers[ProducerType.WORKER].total >= 1,
-        info='[green]2x[/green] [b]Ant[/b] rate\n[green]2x[/green] [b]Worker[/b] rate',
+        info='[green]3x[/green] [b]Ant[/b]/[b]Worker[/b] rate',
     ),
     UpgradeType.PACK_FRAME: Upgrade(
         name=UpgradeType.PACK_FRAME,
         cost={ResourceType.FOOD: 1000, ResourceType.STICKS: 500},
-        modifiers={ProducerType.ANT: 2.0, ProducerType.WORKER: 2.0},
+        modifiers={ProducerType.ANT: 3.0, ProducerType.WORKER: 3.0},
         check_fn=lambda state: not bought(UpgradeType.PACK_FRAME, state)
         and state.resources[ResourceType.STICKS].total >= 1,
-        info='[green]2x[/green] [b]Ant[/b] rate\n[green]2x[/green] [b]Worker[/b] rate',
+        info='[green]2x[/green] [b]Ant[/b]/[b]Worker[/b] rate',
     ),
     UpgradeType.WHEEL: Upgrade(
         name=UpgradeType.WHEEL,
         cost={ResourceType.FOOD: 5000, ResourceType.STICKS: 2000, ResourceType.STONES: 1000},
         modifiers={ProducerType.HAULER: 2.0, ProducerType.WORKER: 2.0},
         check_fn=lambda state: not bought(UpgradeType.WHEEL, state) and state.resources[ResourceType.STONES].total >= 1,
-        info='[green]2x[/green] [b]Hauler[/b] rate\n[green]2x[/green] [b]Worker[/b] rate',
+        info='[green]2x[/green] [b]Hauler[/b]/[b]Worker[/b] rate',
     ),
     UpgradeType.CLUB: Upgrade(
         name=UpgradeType.CLUB,
@@ -90,7 +90,7 @@ ALL_UPGRADES = {
     ),
     UpgradeType.OUTPOST: Upgrade(
         name=UpgradeType.OUTPOST,
-        cost={ResourceType.FOOD: 7500, ResourceType.STICKS: 25000, ResourceType.LAND: 500},
+        cost={ResourceType.FOOD: 7500, ResourceType.STICKS: 2500, ResourceType.LAND: 500},
         modifiers={ProducerType.SOLDIER: 2.0},
         check_fn=lambda state: not bought(UpgradeType.OUTPOST, state) and state.resources[ResourceType.LAND].total >= 1,
         info='[green]2x[/green] [b]Soldier[/b] rate',

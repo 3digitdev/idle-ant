@@ -21,7 +21,7 @@ def build_cost_subtitle(record: dict[T, U], resources: dict[ResourceType, Resour
             out.append(f'[red]{abbrev_num(cost)} {resource}[/red]')
         else:
             out.append(f'[green]{abbrev_num(cost)} {resource}[/green]')
-    return f'[b]Cost:[/b] {" | ".join(out)}'
+    return f'{" | ".join(out)}'
 
 
 class ResourcesColumn(ScrollableContainer):

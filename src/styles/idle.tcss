@@ -82,6 +82,7 @@ GameClock {
 .display-column {
     padding: 1;
     width: 50;
+    height: auto;
     background: $boost;
     border: round white;
 }

@@ -41,10 +41,10 @@ rich==13.7.1
     # via textual
 textual==0.73.0
     # via
+    #   idle-ant (pyproject.toml)
     #   textual-dev
-    #   tui-test (pyproject.toml)
 textual-dev==1.5.1
-    # via tui-test (pyproject.toml)
+    # via idle-ant (pyproject.toml)
 typing-extensions==4.12.2
     # via
     #   textual

@@ -2,6 +2,15 @@
 Idle Clicker TUI Game.  With Ants.
 
 
+## INSTALLATION/USAGE
+
+- **Requires Python 3.12**  Can get with `brew install python@3.12` on mac
+- Create a virtual environment: `python3.12 -m venv venv`
+- Activate the virtual environment: `source venv/bin/activate`
+- Install the requirements: `python -m pip install -r requirements.txt`
+- Run the game: `textual run src/main.py`
+
+
 ## IDEAS
 
 Click food

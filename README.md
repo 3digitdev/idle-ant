@@ -68,4 +68,23 @@ Fractal Engine: 150000000000 cps
 Javascript Console: 1100000000000 cps
 Idleverse: 8300000000000 cps
 
-:)
+Cost of first building:
+
+Cursor: 15
+Grandma: 100
+Farm: 1100
+Mine: 12000
+Factory: 130000
+Bank: 1400000
+Temple: 20000000
+Wizard Tower: 330000000
+Shipment: 5100000000
+Alchemy Lab: 75000000000
+Portal: 1000000000000
+Time Machine: 14000000000000
+Antimatter Condenser: 170000000000000
+Prism: 2100000000000000
+Chancemaker: 26000000000000000
+Fractal Engine: 310000000000000000
+Javascript Console: 7100000000000000000
+Idleverse: 120000000000000000000

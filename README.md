@@ -5,19 +5,23 @@ Idle Clicker TUI Game.  With Ants.
 ## IDEAS
 
 Click food
-Food buys Ants
-Ants gather food
-First upgrade: Queen
-Queen unlocks purchasing Workers
-Workers gather Sticks
-Sticks buy first upgrade: Stilts
-Stilts unlock purchasing Haulers (Food + Sticks)
-Haulers gather Rocks
-Rocks buy second upgrade: Wheels (early) -- upgrade for Haulers/Workers
-Rocks buy third upgrade: Clubs
-Clubs unlock purchasing Soldiers (Food + Sticks + Rocks)
-Soldiers gather Land (mm of land)
-Land buys upgrade: Farming (Food + Land) -- upgrade for Ants
+Food buys `Ants`
+`Ants` gather food
+First upgrade: Queen (unlocks `Workers` [Food], 2x `Ants` production)
+`Workers` gather Sticks
+Sticks buy upgrades:
+  Stilts (unlocks `Haulers [Food + Sticks]`)
+  Pack Frame (2x `Workers` production [Sticks])
+Stilts unlock purchasing `Haulers` (Food + Sticks)
+`Haulers` gather Rocks
+Rocks buy upgrades:
+  Wheels (2x `Workers`/`Haulers` production [Food + Sticks + Rocks]) -- EXPENSIVE
+  Clubs (unlocks `Soldiers [Food + Sticks + Rocks]` [Sticks + Rocks])
+`Soldiers` gather Land (mm of land)
+Land buys upgrades:
+  Farming (2x `Ants` production [Food + Land])
+  Quarry  (2x `Haulers` production [Sticks + Rocks + Land])
+  Outposts (2x `Soldiers` production [Food + Sticks + Land])
 TODO:  WHAT NEXT?
 
 - Popup toast message each time something is unlocked

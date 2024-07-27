@@ -18,6 +18,11 @@ GameContainer Button #click {
     margin-left: 1;
 }
 
+.buy-max {
+    width: 6;
+    min-width: 6;
+}
+
 .food-row {
     height: 5;
     content-align: center middle;

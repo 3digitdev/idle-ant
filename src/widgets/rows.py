@@ -28,18 +28,12 @@ class Row(Horizontal):
             yield Static(str(self.key_type), classes='entry-text' + (' food' if is_food else ''))
             yield Static('0', classes='entry-value' + (' food' if is_food else ''))
 
-    def compose_non_resource(self) -> ComposeResult:
-        yield from self.compose_text(self.key_type == ResourceType.FOOD)
-        yield Horizontal(
-            BuyButton(key_type=self.key_type, amount=1),
-            BuyButton(key_type=self.key_type, amount=5),
-            classes='entry-buttons',
-        )
-
     def btn_disabled(self, btn: BuyButton, record: dict) -> bool:
         mult = btn.amount if isinstance(btn, BuyButton) else 1
         for resource, cost in record[self.key_type].cost:
-            if self.game_state.resources[resource].total < cost * mult:
+            if hasattr(btn, 'amount') and btn.amount == 0 and self.game_state.resources[resource].total < cost:
+                return True
+            elif self.game_state.resources[resource].total < cost * mult:
                 return True
         return False
 
@@ -83,7 +77,7 @@ class ProducerRow(Row):
         yield from self.compose_text(inner_text=self.gather_rates)
         yield Horizontal(
             BuyButton(key_type=self.key_type, amount=1),
-            BuyButton(key_type=self.key_type, amount=5),
+            BuyButton(key_type=self.key_type, amount=0),
             classes='entry-buttons',
         )
 

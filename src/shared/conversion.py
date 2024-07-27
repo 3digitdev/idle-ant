@@ -1,6 +1,11 @@
 from shared import ResourceType, ProducerType, UpgradeType
 
 
+def format_num(number: int | float) -> str:
+    """Formats a number to have commas every 3 digits"""
+    return f'{float(number):,.2f}'.rstrip('0').rstrip('.')
+
+
 def abbrev_num(number: int | float) -> str:
     """Helpful for displaying large numbers as the game progresses"""
     suffixes = [
@@ -17,8 +22,8 @@ def abbrev_num(number: int | float) -> str:
     ]
     for threshold, suffix in suffixes:
         if number >= threshold:
-            return f'{number / threshold:.2f}{suffix}'
-    return str(number)
+            return f'{format_num(number / threshold)}{suffix}'
+    return format_num(number)
 
 
 def type_class(type: ResourceType | ProducerType | UpgradeType) -> str:

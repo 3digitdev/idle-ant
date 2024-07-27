@@ -11,7 +11,7 @@ from game.upgrade import Upgrade, ALL_UPGRADES
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 10.0
+    DEBUG_MULTIPLIER = 2.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
@@ -36,12 +36,19 @@ class GameState:
 
     def gather_rates(self, key_type: ProducerType) -> str:
         p = self.producers[key_type]
-        gather_txt = '[i]Gathers '
+        gather_txt = '[i]'
         gather_txt += ', '.join([f'{abbrev_num(r * p.total)} {n}' for n, r in p.rates.items()])
-        gather_txt += ' per second[/i]'
+        gather_txt += '/s[/i]'
         return gather_txt
 
     def purchase_producer(self, producer: ProducerType, amount: int) -> None:
+        if amount == 0:
+            # Purchase as many as possible
+            for resource, cost in self.producers[producer].cost:
+                bought, rem = divmod(self.resources[resource].total, cost)
+                self.resources[resource].total = rem
+                self.producers[producer].total += bought
+            return
         if not all(self.resources[r].total >= c * amount for r, c in self.producers[producer].cost):
             # Can't afford it with one or more resources
             return

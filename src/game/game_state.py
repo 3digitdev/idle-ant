@@ -7,6 +7,9 @@ from game.resource import Resource, ALL_RESOURCES
 from game.producer import Producer, ALL_PRODUCERS
 from game.upgrade import Upgrade, ALL_UPGRADES
 
+# Cookie Clicker implemented a .15 increase in cost for each purchase and scales well
+COST_SCALE = 1.15
+
 
 @dataclass
 class GameState:
@@ -42,25 +45,28 @@ class GameState:
         return gather_txt
 
     def purchase_producer(self, producer: ProducerType, amount: int) -> None:
-        if amount == 0:
-            # Purchase as many as possible
-            for resource, cost in self.producers[producer].cost:
-                bought, rem = divmod(self.resources[resource].total, cost)
-                self.resources[resource].total = rem
-                self.producers[producer].total += bought
-            return
-        if not all(self.resources[r].total >= c * amount for r, c in self.producers[producer].cost):
-            # Can't afford it with one or more resources
-            return
-        for resource, cost in self.producers[producer].cost:
-            self.resources[resource].total -= cost * amount
-        self.producers[producer].total += amount
+        purchased = 0
+        # We must loop here to allow cost to scale in between purchases of more than 1 producers
+        while True:
+            new_cost = self.producers[producer].cost
+            if not all(self.resources[r].total >= c for r, c in new_cost.items()):
+                # Can't afford it with one or more resources
+                break
+            for resource, cost in new_cost.items():
+                self.resources[resource].total -= cost
+                self.producers[producer].total += 1
+                new_cost[resource] = int(round(cost * COST_SCALE))
+            self.producers[producer].cost = new_cost
+            purchased += 1
+            # If amount is 0, we're 'buying MAX' and we should keep going until we can't afford more
+            if amount > 0 and purchased == amount:
+                break
 
     def purchase_upgrade(self, upgrade: UpgradeType) -> None:
-        if not all(self.resources[r].total >= c for r, c in self.upgrades[upgrade].cost):
+        if not all(self.resources[r].total >= c for r, c in self.upgrades[upgrade].cost.items()):
             # Can't afford it with one or more resources
             return
-        for resource, cost in self.upgrades[upgrade].cost:
+        for resource, cost in self.upgrades[upgrade].cost.items():
             self.resources[resource].total -= cost
         self.upgrades[upgrade].total = 1
         self.upgrades[upgrade].purchased = True

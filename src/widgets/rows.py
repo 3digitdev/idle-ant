@@ -30,7 +30,7 @@ class Row(Horizontal):
 
     def btn_disabled(self, btn: BuyButton, record: dict) -> bool:
         mult = btn.amount if isinstance(btn, BuyButton) else 1
-        for resource, cost in record[self.key_type].cost:
+        for resource, cost in record[self.key_type].cost.items():
             if hasattr(btn, 'amount') and btn.amount == 0 and self.game_state.resources[resource].total < cost:
                 return True
             elif self.game_state.resources[resource].total < cost * mult:

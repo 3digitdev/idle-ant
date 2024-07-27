@@ -14,7 +14,8 @@ class Producer:
     """
 
     name: ProducerType
-    cost: list[tuple[ResourceType, int]]
+    cost: dict[ResourceType, int]
+    # cost: list[tuple[ResourceType, int]]
     rates: dict[ResourceType, float]
     total: int = 0
     status: Status = Status.DISABLED
@@ -33,18 +34,18 @@ ALL_PRODUCERS = {
     ProducerType.ANT: Producer(
         name=ProducerType.ANT,
         status=Status.ENABLED,
-        cost=[(ResourceType.FOOD, 5)],
+        cost={ResourceType.FOOD: 5},
         rates={ResourceType.FOOD: 0.1},
     ),
     ProducerType.WORKER: Producer(
         name=ProducerType.WORKER,
-        cost=[(ResourceType.FOOD, 50)],
+        cost={ResourceType.FOOD: 50},
         rates={ResourceType.STICKS: 0.1},
         check_fn=lambda state: state.upgrades[UpgradeType.FIRST_QUEEN].purchased,
     ),
     ProducerType.HAULER: Producer(
         name=ProducerType.HAULER,
-        cost=[(ResourceType.FOOD, 100), (ResourceType.STICKS, 50)],
+        cost={ResourceType.FOOD: 100, ResourceType.STICKS: 50},
         rates={ResourceType.STONES: 0.1},
         check_fn=lambda state: state.resources[ResourceType.STICKS].status == Status.ENABLED,
     ),

@@ -13,7 +13,7 @@ class Upgrade:
     """
 
     name: UpgradeType
-    cost: list[tuple[ResourceType, int]]
+    cost: dict[ResourceType, int]
     modifiers: dict[ProducerType, float]
     info: str
     total: int = 0
@@ -38,7 +38,7 @@ def bought(upgrade: UpgradeType, game_state: any) -> bool:
 ALL_UPGRADES = {
     UpgradeType.FIRST_QUEEN: Upgrade(
         name=UpgradeType.FIRST_QUEEN,
-        cost=[(ResourceType.FOOD, 250)],
+        cost={ResourceType.FOOD: 250},
         modifiers={ProducerType.ANT: 2.0},
         check_fn=lambda state: not bought(UpgradeType.FIRST_QUEEN, state)
         and state.producers[ProducerType.ANT].total >= 100,
@@ -46,7 +46,7 @@ ALL_UPGRADES = {
     ),
     UpgradeType.STILTS: Upgrade(
         name=UpgradeType.STILTS,
-        cost=[(ResourceType.FOOD, 500), (ResourceType.STICKS, 250)],
+        cost={ResourceType.FOOD: 500, ResourceType.STICKS: 250},
         modifiers={ProducerType.WORKER: 2.0},
         check_fn=lambda state: not bought(UpgradeType.STILTS, state)
         and state.producers[ProducerType.WORKER].total >= 1,

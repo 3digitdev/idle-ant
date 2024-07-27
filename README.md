@@ -10,6 +10,12 @@ Idle Clicker TUI Game.  With Ants.
 - Install the requirements: `python -m pip install -r requirements.txt`
 - Run the game: `textual run src/main.py`
 
+## DEBUG SPEED-INCREASE
+
+- In `src/game/game_state.py`, change the `DEBUG_MULTIPLIER` variable to a number greater than 1.0 to speed up the game
+- This is useful for testing the game without waiting for the slow production rates
+- **This will also multiply how many resources each click gets you**
+
 
 ## IDEAS
 

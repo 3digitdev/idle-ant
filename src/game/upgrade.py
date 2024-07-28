@@ -48,7 +48,8 @@ ALL_UPGRADES = {
         name=UpgradeType.SUGAR_WATER,
         cost={ResourceType.FOOD: 100},
         modifiers={'CLICK': 2.0},  # This upgrade is handled manually in the code check
-        check_fn=lambda state: not bought(UpgradeType.SUGAR_WATER, state)
+        check_fn=lambda state: state.upgrades[UpgradeType.SUGAR_WATER].status == Status.ENABLED
+        or not bought(UpgradeType.SUGAR_WATER, state)
         and state.resources[ResourceType.FOOD].total >= 50,
         info='[green]2x[/] [b]"Gather"[/] rate',
     ),
@@ -82,6 +83,14 @@ ALL_UPGRADES = {
         check_fn=lambda state: not bought(UpgradeType.CLUB, state) and state.resources[ResourceType.STONES].total >= 1,
         info='Unlocks [b cyan]Soldier[/]',
     ),
+    # TODO:  DO WE WANT THIS HERE?  INCREASES CLICK RATE FOR FOO BUT MIGHT NOT BE USEFUL BY THIS POINT.
+    # UpgradeType.ENERGY_DRINK: Upgrade(
+    #     name=UpgradeType.ENERGY_DRINK,
+    #     cost={ResourceType.FOOD: 7500, ResourceType.STICKS: 3500, ResourceType.STONES: 1500},
+    #     modifiers={'CLICK': 4.0},
+    #     check_fn=lambda state: not bought(UpgradeType.ENERGY_DRINK, state) and bought(UpgradeType.CLUB, state),
+    #     info='[green]4x[/] [b]"Gather"[/] rate',
+    # ),
     UpgradeType.FARMING: Upgrade(
         name=UpgradeType.FARMING,
         cost={ResourceType.FOOD: 3000, ResourceType.LAND: 250},

@@ -1,5 +1,6 @@
 from textual.app import ComposeResult
 from textual.containers import HorizontalScroll
+from textual.events import Key
 from textual.reactive import reactive
 from textual.widgets import Button, Static
 from shared import ResourceType, ProducerType, UpgradeType
@@ -24,6 +25,13 @@ class GameContainer(Static):
     def tick(self) -> None:
         self.game_state.tick()
         self.mutate_reactive(GameContainer.game_state)
+
+    def key_handler(self, event: Key) -> None:
+        if event.key == 'space':
+            self.game_state.resources[ResourceType.FOOD].total += int(
+                1 * self.game_state.DEBUG_MULTIPLIER * self.game_state.click_modifier
+            )
+            self.mutate_reactive(GameContainer.game_state)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """

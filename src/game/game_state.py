@@ -55,8 +55,8 @@ class GameState:
                 break
             for resource, cost in new_cost.items():
                 self.resources[resource].total -= cost
-                self.producers[producer].total += 1
                 new_cost[resource] = int(round(cost * COST_SCALE))
+            self.producers[producer].total += 1
             self.producers[producer].cost = new_cost
             purchased += 1
             # If amount is 0, we're 'buying MAX' and we should keep going until we can't afford more

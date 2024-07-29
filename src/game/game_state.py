@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 from math import prod
 from typing import Self
 
@@ -77,6 +78,17 @@ class GameState:
                 continue
             for resource, rate in self.producers[producer].rates.items():
                 self.producers[producer][resource] = rate * modifier
+        if all(u.purchased for u in self.upgrades.values()):
+            self.write_stats()
+
+    def write_stats(self: Self) -> None:
+        with open('stats.txt', 'a') as f:
+            f.write(f'\n{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:\n')
+            for rtype, resource in self.resources.items():
+                f.write(f'  {rtype}: {resource.total}\n')
+            for ptype, producer in self.producers.items():
+                f.write(f'  {ptype}: {producer.total}\n')
+            f.write('-> CHANGES: \n')
 
     def update_visibilities(self: Self) -> None:
         # TODO:  [FUTURE]:  Some animation or effect to show new entities being revealed!

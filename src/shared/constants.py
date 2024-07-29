@@ -6,6 +6,7 @@ class ResourceType(StrEnum):
     STICKS = 'Sticks'
     STONES = 'Stones'
     LAND = 'Land'
+    METAL = 'Metal'
 
     def __contains__(self, item):
         if '-' in item:
@@ -22,6 +23,7 @@ class ProducerType(StrEnum):
     WORKER = 'Workers'
     HAULER = 'Haulers'
     SOLDIER = 'Soldiers'
+    MINER = 'Miners'
 
     def __contains__(self, item):
         if '-' in item:
@@ -44,6 +46,9 @@ class UpgradeType(StrEnum):
     FOREST = 'Forest'
     QUARRY = 'Quarry'
     OUTPOST = 'Outpost'
+    MINING = 'Mining'
+    METAL_TOOLS = 'Metal Tools'
+    METAL_WEAPONS = 'Metal Weapons'
 
     def __contains__(self, item):
         if '-' in item:

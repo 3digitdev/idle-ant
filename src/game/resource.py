@@ -46,4 +46,8 @@ ALL_RESOURCES = {
         name=ResourceType.LAND,
         check_fn=lambda state: state.producers[ProducerType.SOLDIER].total > 0,
     ),
+    ResourceType.METAL: Resource(
+        name=ResourceType.METAL,
+        check_fn=lambda state: state.producers[ProducerType.MINER].total > 0,
+    ),
 }

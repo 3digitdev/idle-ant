@@ -1,0 +1,48 @@
+2024-07-28 22:07:54:
+  Food: 1593
+  Sticks: 5074
+  Stones: 6976
+  Land: 5727
+  Metal: 60
+  Ants: 51
+  Workers: 35
+  Haulers: 15
+  Soldiers: 13
+  Miners: 6
+-> CHANGES: Hauler production 1 -> 0.5; Solder production: 3 -> 2
+2024-07-28 22:28:37:
+  Food: 5726
+  Sticks: 11381
+  Stones: 4140
+  Land: 5216
+  Metal: 310
+  Ants: 54
+  Workers: 35
+  Haulers: 22
+  Soldiers: 11
+  Miners: 10
+-> CHANGES: Soldier Stick cost 400 -> 500; swapped costs of metal upgrades; Metal Weapons Metal cost 1000 -> 750; Soldier production 2 -> 1.5
+2024-07-28 22:48:15:
+  Food: 2918
+  Sticks: 12844
+  Stones: 3387
+  Land: 6894
+  Metal: 17
+  Ants: 56
+  Workers: 36
+  Haulers: 22
+  Soldiers: 14
+  Miners: 9
+-> CHANGES: Fixed Worker upgrade WHEEL 3x -> 2x
+2024-07-28 23:06:00:
+  Food: 1053
+  Sticks: 1100
+  Stones: 4021
+  Land: 4317
+  Metal: 260
+  Ants: 52
+  Workers: 45
+  Haulers: 20
+  Soldiers: 15
+  Miners: 7
+-> CHANGES: Metal upgrade Metal costs 1000 -> 750, 750 -> 500

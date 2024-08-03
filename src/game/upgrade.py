@@ -26,6 +26,12 @@ class Upgrade:
     boost: Boost | None = None
     replace: Replace | None = None
 
+    def __post_init__(self):
+        if self.info == 'REPLACE':
+            self.info = style_info(
+                f'{self.replace.old} [bold]➡[/] {self.replace.created} @ [bold]{self.replace.divisor}:1[/]'
+            )
+
     def __getitem__(self, producer: ProducerType) -> float:
         return self.modifiers[producer]
 
@@ -185,6 +191,6 @@ ALL_UPGRADES = {
         replace=Replace(old=ProducerType.WORKER, created=ProducerType.LUMBERJACK, divisor=3),
         check_fn=lambda state: not bought(UpgradeType.TREE_FARMING, state)
         and state.producers[ProducerType.ENGINEER].status == Status.ENABLED,
-        info=style_info('Worker [bold]➡[/] Lumberjack @ [bold]3:1[/]'),
+        info='REPLACE',
     ),
 }

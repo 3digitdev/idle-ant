@@ -76,6 +76,7 @@ ALL_PRODUCERS = {
         check_fn=lambda state: state.upgrades[UpgradeType.INDUSTRIAL_REVOLUTION].purchased,
     ),
     # FOOD IS NO LONGER A RESOURCE BY THIS POINT
+    # STICKS ARE NO LONGER A RESOURCE BY THIS POINT
     ProducerType.LUMBERJACK: Producer(
         name=ProducerType.LUMBERJACK,
         cost={ResourceType.METAL: 200, ResourceType.ENERGY: 100},

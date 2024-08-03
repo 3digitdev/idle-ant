@@ -24,9 +24,12 @@ class GameState:
     click_modifier: float = 1.0
 
     def tick(self) -> None:
-        for rtype, resource in self.resources.items():
-            self.resources[rtype] += calculate_resource_value(
-                rtype, list(self.producers.values()), list(self.upgrades.values())
+        for producer in self.producers.values():
+            boost = 1.0 if not producer.boost else producer.boost.rate
+            produced = prod([producer.rate.rate, boost, producer.total, GameState.DEBUG_MULTIPLIER])
+            total, progress = divmod(produced, 1)
+            self.resources[producer.rate.resource] += Resource(
+                name=producer.rate.resource, total=int(total), progress=progress
             )
         self.update_entities()
 
@@ -126,19 +129,3 @@ class GameState:
                 new_rate = round(1.0 + (self.producers[boost.cost].total / 20 * BOOST_PER_20), 2)
                 self.upgrades[utype].boost.rate = new_rate
                 self.upgrades[utype].info = style_info(f'[green]⬆[/] {boost.target} rate by {new_rate}x for 30s')
-
-
-def calculate_resource_value(resource: ResourceType, producers: list[Producer], upgrades: list[Upgrade]) -> Resource:
-    """
-    Given a list of producers, calculate the total value of a resource
-    produced by them all combined.
-    """
-    # TODO: Fix this;  It should be centered on Producers, since no two producers produce the same
-    #       resource, but it's currently centered on resources.
-    produced: float = 0.0
-    for p in [pr for pr in producers if pr.rate.resource == resource]:
-        # Calculate the total produced by this producer by multiplying producer rates
-        boost = 1.0 if not p.boost else p.boost.rate
-        produced += prod([p.rate.rate, boost, p.total, GameState.DEBUG_MULTIPLIER])
-    total, progress = divmod(produced, 1)
-    return Resource(resource, int(total), progress)

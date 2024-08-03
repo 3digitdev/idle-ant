@@ -16,7 +16,7 @@ BOOST_PER_20 = 0.5
 @dataclass
 class GameState:
     # This can be modified to speed the game production up for debugging purposes
-    DEBUG_MULTIPLIER = 5.0
+    DEBUG_MULTIPLIER = 1.0
 
     resources: dict[ResourceType, Resource] = field(default_factory=lambda: ALL_RESOURCES)
     producers: dict[ProducerType, Producer] = field(default_factory=lambda: ALL_PRODUCERS)
@@ -44,14 +44,12 @@ class GameState:
                 return self.upgrades[t].status
         return Status.DISABLED
 
-    def gather_rates(self, key_type: ProducerType) -> str:
+    def gather_rate(self, key_type: ProducerType) -> str:
         p = self.producers[key_type]
         boost_rate = 1.0
         if p.boost:
             boost_rate += p.boost.rate
-        gather_txt = '[i]'
-        gather_txt += ', '.join([f'{abbrev_num(r * p.total * boost_rate)} {n}' for n, r in p.rates.items()])
-        gather_txt += '/s[/i]'
+        gather_txt = f'[i]{abbrev_num(p.rate.rate * p.total * boost_rate)} {p.rate.resource}/s[/i]'
         return gather_txt
 
     def purchase_producer(self, producer: ProducerType, amount: int, spend: bool = True) -> None:
@@ -85,21 +83,17 @@ class GameState:
             if producer == 'CLICK':
                 self.click_modifier *= modifier
                 continue
-            for resource, rate in self.producers[producer].rates.items():
-                self.producers[producer][resource] = rate * modifier
+            self.producers[producer].rate.rate *= modifier
         if boost := self.upgrades[upgrade].boost:
             self.producers[boost.target].boost = boost
             old_producer = self.producers[boost.cost]
             self.producers[boost.cost].status = Status.DISABLED
             self.producers[boost.target].boost.rate = old_producer.total / 20 * BOOST_PER_20
-            for resource in old_producer.rates.keys():
-                self.resources[resource].status = Status.DISABLED
-            # Probably not necessary but helps with double-clicking accidentally.
+            self.resources[old_producer.rate.resource].status = Status.DISABLED
             self.upgrades[upgrade].boost = None
         if replace := self.upgrades[upgrade].replace:
             replace.created = replace.created
-            for resource in self.producers[replace.created].rates.keys():
-                self.resources[resource].status = Status.DISABLED
+            self.resources[self.producers[replace.created].rate.resource].status = Status.DISABLED
             self.producers[replace.old].status = Status.DISABLED
             new_total = round(self.producers[replace.old].total / replace.divisor)
             # This will simulate purchasing the new producer, updating totals, rates, and costs
@@ -142,9 +136,9 @@ def calculate_resource_value(resource: ResourceType, producers: list[Producer], 
     # TODO: Fix this;  It should be centered on Producers, since no two producers produce the same
     #       resource, but it's currently centered on resources.
     produced: float = 0.0
-    for p in [pr for pr in producers if resource in pr.rates]:
+    for p in [pr for pr in producers if pr.rate.resource == resource]:
         # Calculate the total produced by this producer by multiplying producer rates
         boost = 1.0 if not p.boost else p.boost.rate
-        produced += prod([p[resource], boost, p.total, GameState.DEBUG_MULTIPLIER])
+        produced += prod([p.rate.rate, boost, p.total, GameState.DEBUG_MULTIPLIER])
     total, progress = divmod(produced, 1)
     return Resource(resource, int(total), progress)

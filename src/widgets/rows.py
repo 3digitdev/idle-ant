@@ -69,13 +69,13 @@ class ResourceRow(Row):
 
 
 class ProducerRow(Row):
-    def __init__(self, gather_rates: str, boosted: bool = False, **kwargs):
+    def __init__(self, gather_rate: str, boosted: bool = False, **kwargs):
         super().__init__(**kwargs)
-        self.gather_rates = gather_rates
+        self.gather_rate = gather_rate
         self.boosted = boosted
 
     def compose(self) -> ComposeResult:
-        yield from self.compose_text(inner_text=('[green]⬆[/] ' if self.boosted else '') + self.gather_rates)
+        yield from self.compose_text(inner_text=('[green]⬆[/] ' if self.boosted else '') + self.gather_rate)
         yield Horizontal(
             BuyButton(key_type=self.key_type, amount=1),
             BuyButton(key_type=self.key_type, amount=0),

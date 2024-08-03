@@ -131,3 +131,20 @@
   Engineers: 13
   Lumberjacks: 22
 -> CHANGES: 
+
+2024-08-02 23:43:54:
+  Food: 91392
+  Sticks: 81204
+  Stones: 38624
+  Land: 1836
+  Metal: 179
+  Energy: 1550
+  Lumber: 0
+  Ants: 50
+  Workers: 52
+  Haulers: 21
+  Soldiers: 12
+  Miners: 6
+  Engineers: 12
+  Lumberjacks: 17
+-> CHANGES: 

@@ -50,7 +50,7 @@ class ProducersColumn(ScrollableContainer):
             row = ProducerRow(
                 key_type=ProducerType(producer),
                 status=self.game_state.get_status(producer),
-                gather_rates=self.game_state.gather_rates(producer),
+                gather_rate=self.game_state.gather_rate(producer),
                 boosted=self.game_state.producers[producer].boost is not None,
             ).data_bind(ProducersColumn.game_state)
             row.border_title = f'[b cyan]{producer}[/] ({self.game_state.producers[producer].total})'

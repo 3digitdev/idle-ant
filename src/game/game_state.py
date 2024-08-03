@@ -25,6 +25,8 @@ class GameState:
 
     def tick(self) -> None:
         for producer in self.producers.values():
+            if producer.status != Status.ENABLED:
+                continue
             boost = 1.0 if not producer.boost else producer.boost.rate
             produced = prod([producer.product.rate, boost, producer.total, GameState.DEBUG_MULTIPLIER])
             total, progress = divmod(produced, 1)

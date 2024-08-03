@@ -26,10 +26,10 @@ class GameState:
     def tick(self) -> None:
         for producer in self.producers.values():
             boost = 1.0 if not producer.boost else producer.boost.rate
-            produced = prod([producer.rate.rate, boost, producer.total, GameState.DEBUG_MULTIPLIER])
+            produced = prod([producer.product.rate, boost, producer.total, GameState.DEBUG_MULTIPLIER])
             total, progress = divmod(produced, 1)
-            self.resources[producer.rate.resource] += Resource(
-                name=producer.rate.resource, total=int(total), progress=progress
+            self.resources[producer.product.resource] += Resource(
+                name=producer.product.resource, total=int(total), progress=progress
             )
         self.update_entities()
 
@@ -52,7 +52,7 @@ class GameState:
         boost_rate = 1.0
         if p.boost:
             boost_rate += p.boost.rate
-        gather_txt = f'[i]{abbrev_num(p.rate.rate * p.total * boost_rate)} {p.rate.resource}/s[/i]'
+        gather_txt = f'[i]{abbrev_num(p.product.rate * p.total * boost_rate)} {p.product.resource}/s[/i]'
         return gather_txt
 
     def purchase_producer(self, producer: ProducerType, amount: int, spend: bool = True) -> None:
@@ -86,17 +86,17 @@ class GameState:
             if producer == 'CLICK':
                 self.click_modifier *= modifier
                 continue
-            self.producers[producer].rate.rate *= modifier
+            self.producers[producer].product.rate *= modifier
         if boost := self.upgrades[upgrade].boost:
             self.producers[boost.target].boost = boost
             old_producer = self.producers[boost.cost]
             self.producers[boost.cost].status = Status.DISABLED
             self.producers[boost.target].boost.rate = old_producer.total / 20 * BOOST_PER_20
-            self.resources[old_producer.rate.resource].status = Status.DISABLED
+            self.resources[old_producer.product.resource].status = Status.DISABLED
             self.upgrades[upgrade].boost = None
         if replace := self.upgrades[upgrade].replace:
             replace.created = replace.created
-            self.resources[self.producers[replace.created].rate.resource].status = Status.DISABLED
+            self.resources[self.producers[replace.created].product.resource].status = Status.DISABLED
             self.producers[replace.old].status = Status.DISABLED
             new_total = round(self.producers[replace.old].total / replace.divisor)
             # This will simulate purchasing the new producer, updating totals, rates, and costs

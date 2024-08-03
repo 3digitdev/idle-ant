@@ -17,6 +17,16 @@ Idle Clicker TUI Game.  With Ants.
 - **This will also multiply how many resources each click gets you**
 
 
+
+## TODOs
+
+- Need an "info box" that can be used to display long text, better than a tooltip
+- Need deprecation system laid out in code
+- Need to add "Folding" system to deprecate old resources
+- Need to give Upgrades more hierarchy
+  - Upgrades that unlock new Producers should only be available after the other Upgrades are purchased
+
+
 ## IDEAS
 
 Click food
@@ -37,7 +47,30 @@ Land buys upgrades:
   Farming (2x `Ants` production [Food + Land])
   Quarry  (2x `Haulers` production [Sticks + Stones + Land])
   Outposts (2x `Soldiers` production [Food + Sticks + Land])
-TODO:  WHAT NEXT?
+  Mining (unlocks `Miners` [Sticks + Stones + Land])
+`Miners` gather Metal
+Metal buys upgrades:
+  Metal Tools (2x `Ants`/`Haulers`/`Miners` production [Food + Sticks + Metal])
+  Metal Weapons (2x `Soldiers` production [Food + Sticks + Metal])
+  Industrial Revolution (unlocks `Engineers` [Food + Land + Metal])
+  ---
+  Ore Processing (Folds `Haulers` into `Miners`)
+`Engineers` gather Energy
+Energy buys upgrades:
+  Steam Power (2x `Soldiers` production [Food + Metal + Energy])
+  ---
+  Industrial Farming (Folds `Ants` into `Soldiers`)
+
+## "Folding"
+This is a way to deprecate old Resources/Producers.
+
+You can purchase an Upgrade for a newer Producer.  This consumes all the Producers of the older
+Resource to, and uses up all the old Resource they produced for a temporary boost to the new Producer
+
+*NOTE:  If any upgrades remain with the old Resource in their cost, that resource is removed*
+
+**TODO:** What rate do we convert old Resource to "Boosts" for?
+
 
 - Popup toast message each time something is unlocked
   - Might need a queue of messages so a large group of unlocks doesn't spam the screen 

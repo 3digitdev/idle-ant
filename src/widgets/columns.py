@@ -16,6 +16,8 @@ type U = Producer | Upgrade
 
 def build_cost_subtitle(record: dict[T, U], resources: dict[ResourceType, Resource], key: T) -> str:
     out = []
+    if key in UpgradeType and record[key].boost:
+        return f'ALL [bold cyan]{record[key].boost.cost}[/]'
     for resource, cost in record[key].cost.items():
         if resources[resource].total < cost:
             out.append(f'[red]{abbrev_num(cost)} {resource}[/red]')
@@ -49,6 +51,7 @@ class ProducersColumn(ScrollableContainer):
                 key_type=ProducerType(producer),
                 status=self.game_state.get_status(producer),
                 gather_rates=self.game_state.gather_rates(producer),
+                boosted=self.game_state.producers[producer].boost is not None,
             ).data_bind(ProducersColumn.game_state)
             row.border_title = f'[b cyan]{producer}[/] ({self.game_state.producers[producer].total})'
             row.border_subtitle = build_cost_subtitle(self.game_state.producers, self.game_state.resources, producer)

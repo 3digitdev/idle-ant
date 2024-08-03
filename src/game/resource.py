@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Self, Callable, Any
 
-from shared import ResourceType, Status, ProducerType
+from shared import ResourceType, Status, ProducerType, UpgradeType
 
 
 @dataclass
@@ -33,6 +33,7 @@ ALL_RESOURCES = {
     ResourceType.FOOD: Resource(
         name=ResourceType.FOOD,
         status=Status.ENABLED,
+        check_fn=lambda state: not state.upgrades[UpgradeType.INDUSTRIAL_FARMING].purchased,
     ),
     ResourceType.STICKS: Resource(
         name=ResourceType.STICKS,
@@ -49,5 +50,13 @@ ALL_RESOURCES = {
     ResourceType.METAL: Resource(
         name=ResourceType.METAL,
         check_fn=lambda state: state.producers[ProducerType.MINER].total > 0,
+    ),
+    ResourceType.ENERGY: Resource(
+        name=ResourceType.ENERGY,
+        check_fn=lambda state: state.producers[ProducerType.ENGINEER].total > 0,
+    ),
+    ResourceType.LUMBER: Resource(
+        name=ResourceType.LUMBER,
+        check_fn=lambda state: state.producers[ProducerType.LUMBERJACK].total > 0,
     ),
 }

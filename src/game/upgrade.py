@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Callable, Any
 
 from shared import ResourceType, ProducerType, UpgradeType, Status, style_info
+from shared.constants import Boost, Replace
 
 
 @dataclass
@@ -22,6 +23,8 @@ class Upgrade:
     # A function that returns whether status should be enabled
     # "Any" here is actually GameState, but we can't import it here due to circular imports
     check_fn: Callable[[Any], bool] = lambda _: True
+    boost: Boost | None = None
+    replace: Replace | None = None
 
     def __getitem__(self, producer: ProducerType) -> float:
         return self.modifiers[producer]
@@ -32,6 +35,10 @@ class Upgrade:
 
 def bought(upgrade: UpgradeType, game_state: any) -> bool:
     return game_state.upgrades[upgrade].purchased
+
+
+def all_bought(upgrades: list[UpgradeType], game_state: any) -> bool:
+    return all(bought(u, game_state) for u in upgrades)
 
 
 # NOTE:  ALL UPGRADES' MODIFIERS SHOULD BE 1.0 OR GREATER TO AVOID NEGATIVE PRODUCTION RATES!
@@ -81,7 +88,8 @@ ALL_UPGRADES = {
         cost={ResourceType.FOOD: 5000, ResourceType.STICKS: 2000, ResourceType.STONES: 600},
         modifiers={},
         check_fn=lambda state: not bought(UpgradeType.CLUB, state)
-        and state.producers[ProducerType.HAULER].status == Status.ENABLED,
+        and state.producers[ProducerType.HAULER].status == Status.ENABLED
+        and all_bought([UpgradeType.STILTS, UpgradeType.PACK_FRAME, UpgradeType.WHEEL], state),
         info=style_info('Unlocks Soldier'),
     ),
     # TODO:  DO WE WANT THIS HERE?  INCREASES CLICK RATE FOR FOO BUT MIGHT NOT BE USEFUL BY THIS POINT.
@@ -118,7 +126,7 @@ ALL_UPGRADES = {
     ),
     UpgradeType.QUARRY: Upgrade(
         name=UpgradeType.QUARRY,
-        cost={ResourceType.STICKS: 5000, ResourceType.STONES: 1500, ResourceType.LAND: 750},
+        cost={ResourceType.STICKS: 3000, ResourceType.STONES: 1500, ResourceType.LAND: 750},
         modifiers={ProducerType.HAULER: 2.0},
         check_fn=lambda state: not bought(UpgradeType.QUARRY, state)
         and state.producers[ProducerType.SOLDIER].status == Status.ENABLED,
@@ -128,7 +136,8 @@ ALL_UPGRADES = {
         name=UpgradeType.MINING,
         cost={ResourceType.STICKS: 6000, ResourceType.STONES: 2000, ResourceType.LAND: 1500},
         modifiers={ProducerType.HAULER: 2.0, ProducerType.WORKER: 2.0},
-        check_fn=lambda state: not bought(UpgradeType.MINING, state) and state.upgrades[UpgradeType.QUARRY].purchased,
+        check_fn=lambda state: not bought(UpgradeType.MINING, state)
+        and all_bought([UpgradeType.FARMING, UpgradeType.FOREST, UpgradeType.OUTPOST, UpgradeType.QUARRY], state),
         info=style_info('Unlocks Miner'),
     ),
     UpgradeType.METAL_WEAPONS: Upgrade(
@@ -146,5 +155,36 @@ ALL_UPGRADES = {
         check_fn=lambda state: not bought(UpgradeType.METAL_TOOLS, state)
         and state.producers[ProducerType.MINER].status == Status.ENABLED,
         info=style_info('2x Ant/Hauler/Miner rate'),
+    ),
+    UpgradeType.INDUSTRIAL_REVOLUTION: Upgrade(
+        name=UpgradeType.INDUSTRIAL_REVOLUTION,
+        # TODO:  FIGURE OUT CORRECT COSTS
+        cost={ResourceType.LAND: 5000, ResourceType.METAL: 1500},
+        modifiers={},
+        check_fn=lambda state: not bought(UpgradeType.INDUSTRIAL_REVOLUTION, state)
+        and state.producers[ProducerType.MINER].status == Status.ENABLED
+        and all_bought([UpgradeType.METAL_WEAPONS, UpgradeType.METAL_TOOLS], state),
+        info=style_info('Unlocks Engineer'),
+    ),
+    # NOTE: FROM HERE ON OUT, FOOD IS NO LONGER A RESOURCE
+    UpgradeType.INDUSTRIAL_FARMING: Upgrade(
+        name=UpgradeType.INDUSTRIAL_FARMING,
+        cost={},
+        modifiers={},
+        boost=Boost(cost=ProducerType.ANT, target=ProducerType.SOLDIER),
+        check_fn=lambda state: not bought(UpgradeType.INDUSTRIAL_FARMING, state)
+        and state.producers[ProducerType.ENGINEER].status == Status.ENABLED
+        and bought(UpgradeType.INDUSTRIAL_REVOLUTION, state),
+        info=style_info('Boosts Soldier rate by 1.0x for 30s'),
+    ),
+    # NOTE: FROM HERE ON OUT, STICKS ARE NO LONGER A RESOURCE
+    UpgradeType.TREE_FARMING: Upgrade(
+        name=UpgradeType.TREE_FARMING,
+        cost={ResourceType.LAND: 6500, ResourceType.METAL: 2000, ResourceType.ENERGY: 250},
+        modifiers={},
+        replace=Replace(old=ProducerType.WORKER, created=ProducerType.LUMBERJACK, divisor=3),
+        check_fn=lambda state: not bought(UpgradeType.TREE_FARMING, state)
+        and state.producers[ProducerType.ENGINEER].status == Status.ENABLED,
+        info=style_info('Worker [bold]➡[/] Lumberjack @ [bold]3:1[/]'),
     ),
 }

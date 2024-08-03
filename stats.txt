@@ -46,3 +46,88 @@
   Soldiers: 15
   Miners: 7
 -> CHANGES: Metal upgrade Metal costs 1000 -> 750, 750 -> 500
+
+2024-08-02 21:41:09:
+  Food: 179938
+  Sticks: 33722
+  Stones: 45434
+  Land: 2384
+  Metal: 11703
+  Energy: 9110
+  Lumber: 0
+  Ants: 54
+  Workers: 45
+  Haulers: 25
+  Soldiers: 23
+  Miners: 11
+  Engineers: 13
+  Lumberjacks: 0
+-> CHANGES: 
+
+2024-08-02 22:06:12:
+  Food: 84999
+  Sticks: 16602
+  Stones: 30093
+  Land: 614
+  Metal: 10450
+  Energy: 7430
+  Lumber: 0
+  Ants: 61
+  Workers: 44
+  Haulers: 24
+  Soldiers: 21
+  Miners: 17
+  Engineers: 16
+  Lumberjacks: 22.0
+-> CHANGES: 
+
+2024-08-02 22:36:56:
+  Food: 47310
+  Sticks: 9712
+  Stones: 12843
+  Land: 1328
+  Metal: 4472
+  Energy: 3110
+  Lumber: 0
+  Ants: 61
+  Workers: 39
+  Haulers: 20
+  Soldiers: 15
+  Miners: 18
+  Engineers: 14
+  Lumberjacks: 20
+-> CHANGES: 
+
+2024-08-02 22:43:58:
+  Food: 17946
+  Sticks: 20882
+  Stones: 27367
+  Land: 8135
+  Metal: 2149
+  Energy: 2810
+  Lumber: 0
+  Ants: 58
+  Workers: 46
+  Haulers: 24
+  Soldiers: 19
+  Miners: 19
+  Engineers: 17
+  Lumberjacks: 23
+-> CHANGES: 
+
+2024-08-02 22:51:00:
+  Food: 120377
+  Sticks: 48895
+  Stones: 31345
+  Land: 645
+  Metal: 213
+  Energy: 1830
+  Lumber: 0
+  Ants: 57
+  Workers: 43
+  Haulers: 23
+  Soldiers: 12
+  Miners: 8
+  Engineers: 13
+  Lumberjacks: 22
+-> CHANGES: 

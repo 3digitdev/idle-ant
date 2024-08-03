@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum, auto, StrEnum
 
 
@@ -7,6 +8,8 @@ class ResourceType(StrEnum):
     STONES = 'Stones'
     LAND = 'Land'
     METAL = 'Metal'
+    ENERGY = 'Energy'
+    LUMBER = 'Lumber'
 
     def __contains__(self, item):
         if '-' in item:
@@ -24,6 +27,8 @@ class ProducerType(StrEnum):
     HAULER = 'Haulers'
     SOLDIER = 'Soldiers'
     MINER = 'Miners'
+    ENGINEER = 'Engineers'
+    LUMBERJACK = 'Lumberjacks'
 
     def __contains__(self, item):
         if '-' in item:
@@ -49,6 +54,9 @@ class UpgradeType(StrEnum):
     MINING = 'Mining'
     METAL_TOOLS = 'Metal Tools'
     METAL_WEAPONS = 'Metal Weapons'
+    INDUSTRIAL_REVOLUTION = 'Industrial Revolution'
+    INDUSTRIAL_FARMING = 'Industrial Farming'
+    TREE_FARMING = 'Tree Farming'
 
     def __contains__(self, item):
         if '-' in item:
@@ -69,3 +77,23 @@ class Status(Enum):
     @classmethod
     def from_bool(cls, value: bool):
         return cls.ENABLED if value else cls.DISABLED
+
+
+@dataclass
+class Boost:
+    # This is the Producer that will get spent to buy the boost
+    cost: ProducerType
+    target: ProducerType
+    # This is the temporary boost rate that will be applied to the Producer being boosted
+    # The value will change based on the boost_cost Producer's current total
+    rate: float = 1.0
+    # This is how many seconds remain on the boost
+    timer: int = 30
+
+
+@dataclass
+class Replace:
+    old: ProducerType
+    created: ProducerType
+    # How much of the old Producer's total will be transferred to the new Producer
+    divisor: int = 2
